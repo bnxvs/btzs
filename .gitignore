@@ -1,0 +1,23 @@
+node_modules/
+dist/
+src-tauri/target/
+*.local
+.DS_Store
+
+# Оригинальный бинарник Plotter for Windows (BTZS Software) — не публикуется.
+WinPlotter.exe
+
+# Бинарники оригинальной программы внутри набора образцов `app/`
+# (тестам нужны только данные `.pfc`/`.ppc`/`.pmf` и текст справки).
+app/Plotter.exe
+app/*.dll1
+app/Global_Controls_*
+app/Global_System_*
+
+# Артефакты реверс-инжиниринга этого бинарника.
+exeres/
+extracted/
+msi/
+
+# Рабочая папка.
+.tmp/

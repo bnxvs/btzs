@@ -1,0 +1,1183 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+}
+
+/* Документ Matcher */
+.matcher-tab {
+  padding: 8px;
+}
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid #999;
+  margin-bottom: 8px;
+}
+.tab {
+  padding: 4px 12px;
+}
+.tab.selected {
+  font-weight: 600;
+  border-bottom: 2px solid currentColor;
+}
+.matcher-curves {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.curve-item.selected,
+.approx-item.selected {
+  font-weight: 600;
+  outline: 2px solid currentColor;
+}
+.matcher-zones table,
+.compare-table {
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+.matcher-zones th,
+.matcher-zones td,
+.compare-table th,
+.compare-table td {
+  border: 1px solid #bbb;
+  padding: 2px 8px;
+  text-align: left;
+}
+.matcher-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.matcher-override,
+.matcher-message.error,
+.dialog-error {
+  color: #b00;
+}
+.matcher-hint,
+.dialog-hint {
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Модальные диалоги (spec: app-shell / окна-диалоги).
+ *
+ * `Dialog` рисует обёртку `.dialog-overlay` поверх всего окна и карточку
+ * `.dialog` по центру; без этих правил диалоги попадали в обычный поток и
+ * выглядели как встроенные формы. */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.35);
+  overflow: auto;
+}
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(520px, 100%);
+  max-height: calc(100vh - 48px);
+  color: #1d1d1f;
+  background: #fff;
+  border: 1px solid #d2d2d7;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+.dialog-title {
+  padding: 14px 20px;
+  font-size: 1.05em;
+  font-weight: 600;
+  border-bottom: 1px solid #e3e3e8;
+}
+.dialog-body {
+  flex: 1;
+  padding: 16px 20px;
+  overflow: auto;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid #e3e3e8;
+  background: #fafafd;
+}
+
+/* Поля формы внутри диалога. */
+/* Диалоги с таблицами и предпросмотром печати требуют больше ширины. */
+.dialog:has(.step-tablet-table),
+.dialog:has(.print-page) {
+  width: min(760px, 100%);
+}
+
+/* Таблицы внутри диалогов (шаг. клин, общие плёнки). */
+.dialog table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.dialog th,
+.dialog td {
+  border: 1px solid #d2d2d7;
+  padding: 4px 8px;
+  text-align: left;
+}
+.dialog th {
+  background: #f5f5f7;
+}
+.dialog tbody tr[aria-selected='true'],
+.dialog tbody tr.selected {
+  background: #e6f0ff;
+  outline: 2px solid #0068ff;
+}
+
+.dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.dialog-field-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dialog-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.dialog-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.dialog-body .dialog-hint {
+  margin: 0 0 12px;
+}
+.dialog-body .dialog-error {
+  margin: 0 0 12px;
+}
+
+/* Элементы управления в диалоге. */
+.dialog input[type='text'],
+.dialog input[type='number'],
+.dialog input[type='search'],
+.dialog select,
+.dialog textarea {
+  padding: 5px 8px;
+  border: 1px solid #c8c8cd;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+.dialog input:focus,
+.dialog select:focus,
+.dialog textarea:focus {
+  outline: none;
+  border-color: #0068ff;
+  box-shadow: 0 0 0 3px rgba(0, 104, 255, 0.2);
+}
+.dialog button {
+  padding: 6px 14px;
+  border: 1px solid #c8c8cd;
+  border-radius: 8px;
+  background: #f5f5f7;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.dialog button:hover:not(:disabled) {
+  background: #eaeaf0;
+}
+.dialog button:disabled {
+  color: #a1a1a6;
+  cursor: default;
+}
+.dialog fieldset {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid #e3e3e8;
+  border-radius: 10px;
+}
+.dialog legend {
+  padding: 0 6px;
+  font-weight: 600;
+}
+.options-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.options-field:last-child {
+  margin-bottom: 0;
+}
+/* Флажок или радиокнопка с подписью — в одну строку (в отличие от поля
+ * «подпись сверху — ввод снизу»). */
+.options-field:has(input[type='checkbox']),
+.options-field:has(input[type='radio']),
+.print-scope label,
+.print-graphing label {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.print-scope label,
+.print-graphing label {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+/* ===== Вкладки документа (Данные / Семейство / Анализ / Графики) ===== */
+
+/* Общие элементы управления в области документа. */
+.document-area input[type='text'],
+.document-area select,
+.document-area textarea {
+  padding: 4px 8px;
+  border: 1px solid #c8c8cd;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+.document-area input:focus,
+.document-area select:focus {
+  outline: none;
+  border-color: #0068ff;
+  box-shadow: 0 0 0 3px rgba(0, 104, 255, 0.2);
+}
+
+/* --- Вкладка «Данные» --- */
+.data-tab {
+  padding: 12px 16px;
+}
+.data-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.data-toolbar button {
+  padding: 5px 12px;
+  border: 1px solid #c8c8cd;
+  border-radius: 8px;
+  background: #f5f5f7;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.data-toolbar button:hover:not(:disabled) {
+  background: #eaeaf0;
+}
+.data-toolbar button:disabled {
+  color: #a1a1a6;
+  cursor: default;
+}
+.data-idmin {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.data-message {
+  margin: 0 0 10px;
+  color: #6e6e73;
+}
+.data-message.error {
+  color: #b00;
+}
+.data-table {
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+.data-table th,
+.data-table td {
+  border: 1px solid #d2d2d7;
+  padding: 1px 4px;
+}
+.data-table th {
+  background: #f5f5f7;
+  padding: 2px 8px;
+}
+.data-table .step-number {
+  text-align: right;
+  color: #6e6e73;
+  padding: 1px 8px;
+}
+.data-table .curve-header {
+  border: none;
+  background: transparent;
+  padding: 4px 8px;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+}
+.data-table .curve-header.selected {
+  color: #0068ff;
+  text-decoration: underline;
+}
+.data-table input[type='text'] {
+  width: 64px;
+  border: none;
+  border-radius: 3px;
+  padding: 1px 4px;
+  text-align: right;
+}
+.data-hint {
+  margin: 2px 0;
+  color: #6e6e73;
+  font-size: 0.9em;
+}
+
+/* --- Вкладка «Семейство» --- */
+.family-tab {
+  padding: 12px 16px;
+}
+.family-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 6px 24px;
+  margin: 0 0 16px;
+}
+.family-row {
+  display: flex;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid #eeeef2;
+}
+.family-row dt {
+  flex: 0 0 160px;
+  color: #6e6e73;
+}
+.family-row dd {
+  margin: 0;
+  font-weight: 500;
+  word-break: break-word;
+}
+.family-tab > button {
+  padding: 6px 14px;
+  border: 1px solid #c8c8cd;
+  border-radius: 8px;
+  background: #f5f5f7;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* --- Вкладка «Анализ» --- */
+.analyze-tab {
+  padding: 12px 16px;
+}
+.analyze-film,
+.analyze-paper {
+  padding: 4px 0;
+}
+.analyze-display-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.analyze-params {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 18px;
+  margin-bottom: 12px;
+}
+.analyze-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9em;
+}
+.analyze-field select,
+.analyze-field input {
+  min-width: 90px;
+}
+.analyze-curves {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+.analyze-curves .curve-item {
+  padding: 4px 10px;
+  border: 1px solid #c8c8cd;
+  border-radius: 8px;
+  background: #f5f5f7;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.analyze-curves .curve-item.selected {
+  background: #0068ff;
+  border-color: #0068ff;
+  color: #fff;
+  outline: none;
+}
+.analyze-table {
+  border-collapse: collapse;
+  margin-bottom: 14px;
+}
+.analyze-table th,
+.analyze-table td {
+  border: 1px solid #d2d2d7;
+  padding: 3px 12px;
+  text-align: right;
+}
+.analyze-table th {
+  background: #f5f5f7;
+  font-weight: 600;
+}
+.analyze-table th:first-child,
+.analyze-table td:first-child {
+  text-align: left;
+}
+.analyze-zones {
+  margin-bottom: 14px;
+}
+.analyze-zones h3 {
+  margin: 0 0 6px;
+}
+.analyze-zones table {
+  border-collapse: collapse;
+}
+.analyze-zones th,
+.analyze-zones td {
+  border: 1px solid #d2d2d7;
+  padding: 3px 12px;
+  text-align: right;
+}
+.analyze-zones th {
+  background: #f5f5f7;
+}
+.analyze-zones th:first-child,
+.analyze-zones td:first-child {
+  text-align: left;
+}
+.analyze-zones .zone-row.hovered {
+  background: #e6f0ff;
+}
+.analyze-info {
+  margin: 0 0 10px;
+}
+.analyze-warning {
+  margin: 0 0 10px;
+  color: #b00;
+}
+.analyze-hint {
+  margin: 0 0 10px;
+  color: #6e6e73;
+  font-size: 0.9em;
+}
+.analyze-legend {
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  background: #f5f5f7;
+  font-size: 0.9em;
+}
+.analyze-legend-item {
+  display: flex;
+  gap: 6px;
+  margin: 2px 0;
+}
+.analyze-legend dt {
+  flex: 0 0 auto;
+  min-width: 90px;
+  font-weight: 600;
+}
+.analyze-legend dd {
+  margin: 0;
+  color: #3a3a3c;
+}
+
+/* --- Вкладка «Графики» --- */
+.charts-tab {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 16px;
+}
+.charts-display {
+  flex: 1 1 560px;
+  max-width: 660px;
+  min-width: 320px;
+}
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+}
+.chart-plot {
+  fill: #fff;
+  stroke: #c8c8cd;
+}
+.chart-grid {
+  stroke: #e3e3e8;
+  stroke-width: 1;
+}
+.chart-line {
+  stroke: #0068ff;
+  stroke-width: 2;
+}
+.chart-dot {
+  fill: #0068ff;
+}
+.chart-dot.disconnected {
+  fill: #fff;
+  stroke: #0068ff;
+  stroke-width: 2;
+}
+.chart-tick {
+  fill: #6e6e73;
+  font-size: 12px;
+}
+.chart-axis-title {
+  fill: #1d1d1f;
+  font-size: 13px;
+  font-weight: 600;
+}
+.chart-point-label {
+  fill: #1d1d1f;
+  font-size: 11px;
+}
+.chart-grade {
+  font-size: 12px;
+}
+.charts-info {
+  flex: 0 0 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.charts-info h2,
+.charts-info h3 {
+  margin: 0;
+  font-size: 0.95em;
+}
+.charts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.chart-item {
+  width: 100%;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.chart-item:hover {
+  background: #eaeaf0;
+}
+.chart-item.selected {
+  background: #0068ff;
+  color: #fff;
+  font-weight: 600;
+}
+.charts-params {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.charts-param {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9em;
+}
+.charts-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.charts-hint {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 0.9em;
+}
+.charts-status {
+  flex-basis: 100%;
+  min-height: 1.4em;
+  margin: 0;
+  color: #0068ff;
+}
+
+/* --- Документ Matcher: вкладки Info / Film / Paper / Compare --- */
+.matcher-info,
+.matcher-film,
+.matcher-paper,
+.matcher-compare {
+  padding: 4px 0;
+}
+.matcher-info h2,
+.matcher-film h3,
+.matcher-paper h3,
+.matcher-compare h3 {
+  margin: 14px 0 6px;
+  font-size: 1em;
+}
+.matcher-analysis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 8px 0 12px;
+}
+.matcher-analysis p {
+  margin: 0;
+}
+.matcher-graph {
+  max-width: 660px;
+  margin: 0 0 16px;
+}
+.matcher-params {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 16px;
+}
+.matcher-param {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9em;
+}
+.matcher-param input {
+  min-width: 80px;
+}
+.matcher-param-readonly {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 0.9em;
+}
+.matcher-lock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 4px;
+}
+.matcher-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e3e3e8;
+}
+.matcher-footer button {
+  padding: 6px 14px;
+  border: 1px solid #c8c8cd;
+  border-radius: 8px;
+  background: #f5f5f7;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Содержимое документа. */
+.document-body {
+  min-height: 120px;
+}
+
+/* --- График семейства характеристических кривых --- */
+.family-graph,
+.analyze-graph {
+  max-width: 660px;
+  margin: 0 0 16px;
+}
+.family-chart-empty {
+  margin: 0;
+  color: #6e6e73;
+  font-size: 0.9em;
+}
+.chart-line-dashed {
+  stroke-dasharray: 5 4;
+  stroke: #6e6e73;
+}
+.chart-guide {
+  stroke: #86868b;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.chart-guide-label {
+  fill: #6e6e73;
+  font-size: 11px;
+}
+.chart-marker {
+  fill: #1d1d1f;
+}
+.zone-band {
+  fill: rgba(0, 104, 255, 0.12);
+  stroke: #0068ff;
+  stroke-width: 1;
+}
+.zone-label {
+  fill: #0068ff;
+  font-size: 11px;
+  font-weight: 600;
+}
+.zone-projection {
+  stroke: #b0b0b8;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+/* --- Списки выбора в диалогах (приближённые кривые, порядок кривых) --- */
+.approx-list,
+.arrange-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.approx-item,
+.arrange-item {
+  width: 100%;
+  padding: 5px 10px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.approx-item:hover,
+.arrange-item:hover {
+  background: #f0f0f4;
+}
+.approx-item.selected,
+.arrange-item.selected {
+  background: #0068ff;
+  border-color: #0068ff;
+  color: #fff;
+}
+.arrange-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* --- Справка --- */
+.help-topics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.help-topic {
+  margin-bottom: 14px;
+}
+.help-topic h3 {
+  margin: 0 0 4px;
+  font-size: 1em;
+}
+.help-topic p {
+  margin: 0;
+  color: #3a3a3c;
+  line-height: 1.45;
+}
+.help-footer {
+  margin: 8px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid #e3e3e8;
+  color: #6e6e73;
+  font-size: 0.9em;
+}
+
+/* --- Ступенчатый клин --- */
+.step-tablet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.step-tablet-saved {
+  display: inline-flex;
+  gap: 4px;
+}
+
+/* --- Предпросмотр печати --- */
+.print-page {
+  transform-origin: top center;
+  margin: 0 auto;
+  padding: 20px 24px;
+  background: #fff;
+  border: 1px solid #d2d2d7;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.print-page h4 {
+  margin: 0 0 10px;
+}
+.print-page ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.print-figure {
+  margin: 12px 0;
+}
+.print-figure figcaption {
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.print-page .chart-svg {
+  page-break-inside: avoid;
+}
+.print-page-label {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+/* --- Печатный документ (spec: printing-and-export).
+ *
+ * `window.print()` печатает DOM окна, поэтому задание печати монтируется в
+ * отдельный корень `#print-root` вне оболочки. На экране он скрыт; при печати
+ * показывается он, а оболочка приложения — скрывается. Так на бумаге
+ * оказываются только страницы графиков, без меню, вкладок и диалогов. */
+#print-root {
+  display: none;
+}
+
+@media print {
+  /* Без печатного корня (например, системное «Печать» браузера) оболочку не
+   * трогаем — печатается то, что видно на экране. */
+  body.printing .app-shell {
+    display: none !important;
+  }
+  #print-root {
+    display: block;
+  }
+  #print-root .print-page {
+    transform: none !important;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  #print-root .print-page:last-child {
+    page-break-after: auto;
+  }
+  #print-root .print-figure {
+    page-break-inside: avoid;
+  }
+  @page {
+    margin: 14mm;
+  }
+}
+
+/* --- Группа параметров Options --- */
+.options-group {
+  display: flex;
+  flex-direction: column;
+}
+.options-group > legend {
+  font-size: 0.95em;
+}
+
+/* Оболочка приложения (spec: app-shell). */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #1d1d1f;
+  background: #f5f5f7;
+}
+
+/* Панель команд (меню приложения). */
+.menu-bar {
+  display: flex;
+  gap: 2px;
+  padding: 4px 8px;
+  border-bottom: 1px solid #d2d2d7;
+  background: #ececf0;
+}
+.menu-root {
+  position: relative;
+}
+.menu-title {
+  border: none;
+  background: transparent;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.menu-title:hover,
+.menu-title.open {
+  background: #d6d6db;
+}
+.menu-dropdown {
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  left: 0;
+  min-width: 260px;
+  margin: 4px 0 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.menu-item,
+.menu-submenu-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background: #0068ff;
+  color: #fff;
+}
+.menu-item:hover .menu-shortcut {
+  color: rgba(255, 255, 255, 0.8);
+}
+.menu-check {
+  width: 1em;
+}
+.menu-label {
+  flex: 1;
+}
+.menu-shortcut {
+  color: #86868b;
+  font-size: 0.85em;
+}
+.menu-separator {
+  height: 1px;
+  margin: 5px 6px;
+  background: #e0e0e5;
+}
+.menu-submenu {
+  position: relative;
+}
+.menu-submenu .menu-dropdown.submenu {
+  top: 0;
+  left: 100%;
+}
+.menu-disabled {
+  padding: 6px 10px;
+  color: #a1a1a6;
+}
+
+/* Иконочная панель команд. */
+.command-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 6px 8px;
+  background: #fafafd;
+  border-bottom: 1px solid #e3e3e8;
+}
+.command-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.command-divider {
+  width: 1px;
+  align-self: stretch;
+  margin: 2px 6px;
+  background: #dcdce1;
+}
+.command-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.command-button:hover {
+  background: #eaeaf0;
+  border-color: #dcdce1;
+}
+.command-button:active {
+  background: #dcdce4;
+}
+.command-button:disabled {
+  color: #a1a1a6;
+  cursor: default;
+}
+.command-label {
+  font-size: 0.85em;
+}
+
+/* Полоса вкладок открытых документов. */
+.document-tabstrip {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  padding: 6px 8px 0;
+  background: #fafafd;
+  border-bottom: 1px solid #d2d2d7;
+  overflow-x: auto;
+}
+.doc-tab {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d2d2d7;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: #ececf0;
+}
+.doc-tab.active {
+  background: #fff;
+  box-shadow: 0 -1px 0 #fff inset;
+}
+.doc-tab-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 220px;
+  padding: 6px 4px 6px 12px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.doc-tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
+.doc-tab-dirty {
+  color: #0068ff;
+  font-size: 0.6em;
+}
+.doc-tab-close {
+  margin-right: 6px;
+  padding: 0 6px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font: inherit;
+  font-size: 1.1em;
+  line-height: 1;
+  color: #86868b;
+  cursor: pointer;
+}
+.doc-tab-close:hover {
+  background: #d6d6db;
+  color: #1d1d1f;
+}
+
+/* Содержимое активного документа. */
+.document-area {
+  position: relative;
+  flex: 1;
+  padding: 0;
+  overflow: auto;
+  background: #fff;
+}
+.document-window {
+  padding: 12px 16px;
+}
+.document-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e3e3e8;
+}
+.document-tab {
+  padding: 6px 14px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font: inherit;
+  color: #6e6e73;
+  cursor: pointer;
+}
+.document-tab:hover {
+  color: #1d1d1f;
+}
+.document-tab.active {
+  color: #0068ff;
+  border-bottom-color: #0068ff;
+  font-weight: 600;
+}
+.status-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 12px;
+  border-top: 1px solid #d2d2d7;
+  background: #ececf0;
+  font-size: 0.85em;
+}
+.status-document {
+  color: #1d1d1f;
+}
+.status-dirty {
+  color: #0068ff;
+}
+.status-spacer {
+  flex: 1;
+}
+.status-hint {
+  color: #6e6e73;
+}
+.no-documents {
+  color: #6e6e73;
+  padding: 24px;
+}
+.about-product {
+  margin: 0 0 4px;
+}
+.about-version,
+.about-copyright,
+.about-company,
+.about-website {
+  margin: 2px 0;
+}
+.help-topic h3 {
+  margin: 8px 0 2px;
+}

@@ -1,0 +1,113 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Paper tab</title>
+</head>
+
+<body>
+
+<b><font SIZE="4" COLOR="#000000">
+<h1><font face="Arial">The Paper Tab</font></h1>
+</font></b><font COLOR="#000000">
+<blockquote>
+<p><font face="Arial">The Paper tab in Matcher is much like the <a href="analyze_tab.htm#paper">Analysis
+tab</a> for a Paper document. Please refer to that section for the analysis
+parameter details. Additional information or differences will be covered here.</font></p>
+<p><font face="Arial">There is one additional option of the Paper tab that is
+not present when loading the Paper document directly. The &quot;Lock Film
+DR=ES&quot; option will overwrite the film's DR value with the ES value of the
+selected curve.&nbsp; If this option is not selected then film's DR value and
+the paper's ES value may not match.</font></p>
+</font><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="density_zones"></a>Negative Density Zones</font></h3>
+</font><p><font face="Arial" color="#000000">When a Paper curve is selected, the
+selected Film curve's Negative Density Zones</font><font COLOR="#000000"><font face="Arial"> 
+will be shown at the bottom of the graph. These are the zones that appear on the
+right side of the Film graph when a Film curve is selected. These zones
+represent the density range of the negative necessary to produce a print&nbsp;
+that is matched to the current ES value of the selected Paper curve. The
+Negative Density Zones are divided as the selected Film curve dictates (see <a href="film_tab.htm#density_zones">Negative
+Density Zone </a>in the Film tab section) and are labeled as Zones 2 through 8.
+In addition a gradient is shown to give some visual reference to the range of
+negative density.&nbsp; This gradient is not meant to accurately convey the
+negative density, it is simply to be taken as a visual reminder of how negative
+density is translated into print exposure values.</font></p>
+</font><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="print_zones"></a>Print Zones</font></h3>
+</font><font COLOR="#000000">
+<p><font face="Arial">Along the right side of the paper graph are the Print Zones
+and the Reference curve Zones. The division of the Print&nbsp; Zones, 2 through 8, depends
+entirely on the contour of the selected paper curve when matched to a particular
+Film curve. You'll will see (via the
+gray dashed lines) the Negative Density Zones extended up to the Paper curve and then
+extended over to the Print Zones. Here you can see how negative density is translated into
+print density. There is also a marker that shows where the 18% gray density lies,
+which is near the middle of the normal Zone V range. Again the gradient shown is
+not meant to
+accurately convey the density of the print but instead serves as a visual
+reminder of how subject luminance is translated into negative density.&nbsp;</font></p>
+<p><font face="Arial">It’s sometimes useful to identify the densities of the 
+various zones but because zones are really regions that span a range of 
+densities, determining the median density would require some bothersome 
+calculation if the program didn’t do it for you. With the paper tab active and a 
+single paper curve selected, move the mouse cursor onto the print zone column 
+and a floating window will appear defining the zone density boundaries and the 
+median density.</font></p>
+<p><font face="Arial">The lines that connect the Print Zones to the Reference
+Zones allow you to visually see how the current match compares to a reference
+standard. Zones are shown to be either compressed or expanded, and possible
+shifted toward lighter or darker values. More information on how to
+interpret matches can be found in the <a href="matcher.htm"> Matcher overview</a>.</font></p>
+</font><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="ref_curves"></a>Print Reference Curves</font></h3>
+</font><font COLOR="#000000">
+<p><font face="Arial">While working with Matcher documents you typically are
+comparing your newly created matches to a reference standard. Plotter contains
+two reference standard, one for non-flared matches and one for flared matches.
+These reference standards represent a typical film matched to a typical paper
+and serve as a basis for all comparisons. You should choose&nbsp; the
+appropriate reference standard based on your use of flare in&nbsp; the Film's
+analysis parameters.</font></p>
+<p><font face="Arial">You can set the default for new documents via the Options
+dialog. In addition you can select which reference curve to display by using
+either the &quot;Use Default Reference Curve&quot; or &quot;Use Default
+Reference Curve (Flared)&quot; option. Whichever one is selected will have a
+check mark next to it in the menu as well as being noted on the graph
+itself.&nbsp; The selected reference curve is saved in the Matcher document. </font></p>
+<font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="loading_curves"></a>Loading Reference Curves</font></h3>
+</font><p><font face="Arial">In addition to using one of the two reference
+standards you can load your own custom reference curve. These custom reference
+curves are based on Matcher documents. Whenever a Matcher document is saved, the
+currently selected Film and Paper curves is saved as a reference curve for
+loading into other Matcher documents as either a reference curve or a comparison
+curve (See the <a href="compare_tab.htm">Compare Tab</a> section).</font></p>
+<p><font face="Arial">To use a saved Matcher document as the new reference
+curve, select the &quot;Load Reference Curve...&quot; option from the Match
+menu. You will be prompted to select a saved Matcher document.&nbsp; If that
+saved Matcher document was saved with a Film and Paper curve selected, it will
+be loaded as the new reference curve. This allows you to set you own reference
+standard based on your own materials if you wish.</font></p>
+<p><font face="Arial">When using a custom reference curve it is embedded in the
+Matcher document it was loaded into and thus is no longer linked to the external
+Matcher document it was loaded from.&nbsp; Any changes to that external Matcher
+document will not be reflected in your new Matcher document.</font></p>
+<p><font face="Arial">You may also set your default reference curve to be a
+custom reference curve via the program Options. Any custom selected reference
+curve is cached and not linked to the external Matcher document it was loaded
+from. Any changes to that external Matcher document will not be reflected in
+your new Matcher documents.</font></p>
+<blockquote>
+  <p><i><font face="Arial">Note: While this feature makes it possible to quickly
+  compare matches between documents, using the Compare tab is a much better
+  option for this.</font></i></p>
+</blockquote>
+</font>
+</blockquote>
+
+</body>
+
+</html>

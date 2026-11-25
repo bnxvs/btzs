@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Film tab</title>
+</head>
+
+<body>
+
+<b><font SIZE="4" COLOR="#000000">
+<h1><font face="Arial">The Film Tab</font></h1>
+</font></b><font COLOR="#000000">
+<blockquote>
+<p><font face="Arial">The Film tab in Matcher is much like the <a href="analyze_tab.htm">Analysis
+tab</a> for a Film document. Please refer to that sections for the analysis
+parameter details. Additional information or differences will be covered here.</font></p>
+</font><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="subject_zones"></a>Subject Zones</font></h3>
+</font><p><font face="Arial" color="#000000">When a Film curve is selected, the
+Subject Zones</font><font COLOR="#000000"><font face="Arial"> will be shown at
+the bottom of the graph.&nbsp; These zones represent the luminance range of the
+subject necessary to produce a negative that is matched to the current ES value.
+The Subject Zones are equally divided and labeled as Zones 2 through 8. In
+addition a gradient is shown to give some visual reference to the range of
+luminance.&nbsp; This gradient is not meant to accurately convey the subject
+luminance, it is simply to be taken as a visual reminder of how subject luminance
+is translated into exposure values.</font></p>
+</font><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="density_zones"></a>Negative Density Zones</font></h3>
+</font><font COLOR="#000000">
+<p><font face="Arial">Along the right side of the graph the Negative Density
+Zones are displayed. The division of the Density Zones, 2 through 8, depends
+entirely on the contour of the selected film curve. You'll will see (via the
+gray dashed lines) the Subject Zones extended up to the Film curve and then
+extended over to the Negative Density Zones. Here you can see how subject luminance
+is translated into negative density. Again the gradient shown is not meant to
+accurately convey the density of the negative but instead serves as a visual
+reminder of how subject luminance is translated into negative density.</font></p>
+</font><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="approximating_curves"></a>Approximating Film
+curves</font></h3>
+</font><font COLOR="#000000">
+<p><font face="Arial">While working with Matcher documents it is possible to
+approximate intermediate film curves for use in creating new matches. You can
+approximate a curve based on either a SBR or Average G value as long as the
+family's curves range contains the requested SBR or Average G value.
+Approximated curves show in the list of curves along with the other film curves.
+Depending on how they were created they will be show in one of two ways, either
+as &quot;SBR ~X.xx&quot; or as &quot;Ave. G ~X.xx&quot; where &quot;X.xx&quot;
+is the value that was used to create them.&nbsp; Any approximated curves are
+saved in the Matcher document.</font></p>
+<p><font face="Arial">To manage approximated curves, select the
+&quot;Approximate Curves...&quot; option from the Match menu. This will open the
+&quot;Manage Approximated Curves&quot; dialog.</font></p>
+<blockquote>
+  <p><i><font face="Arial">Note: In order to manage approximated curves, the
+  Film tab must be active.</font></i></p>
+</blockquote>
+<p><font face="Arial">The Manage Curves dialog will allow you to add or remove
+approximated curves. You can create new approximated curves by specifying either
+a SBR value or an Average G value. Any value can be specified but it must be
+within the range that the family contains. Adding a new curve will close the
+dialog and cause the newly added curve to be selected.</font></p>
+<p><font face="Arial">You can also remove an approximated curves that have been
+created by select the curve from the list and pressing the &quot;Remove&quot;
+button.</font></p>
+<p><font face="Arial">Approximated curves are different from normal family film
+curves in two ways. First they are just approximations and they may no exactly
+match the values entered to create them but they should be very close especially
+if they are in the middle of the range.&nbsp;</font></p>
+<p><font face="Arial">Secondly, approximated curves are dynamic. Any change to
+the Film's ES, Flare, Exposure Adjustment, or Analysis Method values will cause
+all approximated curves to be re-calculated so that their requested SBR or
+Average G value stays consistent.&nbsp; This is course will cause the
+approximated curve's contour to change as the curve is recalculated. If an
+analysis parameter changes such that the requested SBR or Average G value is no
+longer within the range of the curve family then the approximated curve will not
+be recalculated and it will be flagged as &quot;<i>(approx. is out of range).</i>&quot;</font></p>
+</font>
+</blockquote>
+
+</body>
+
+</html>

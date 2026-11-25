@@ -1,0 +1,472 @@
+<common_films xmlns="http://btzs.org/Common Films.xsd">
+	<film>
+		<name>Default</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>100 Tmax DD-X 1+6</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>100 TMax DI#13 1+7</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>100 TMax DI#13 1+9 Lo-Composite</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>100 TMax HC-110 1+14</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>100 TMax ID-11 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>100 TMax TMRS 1+9</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>100 TMax Xtol 1+1</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>320 TXP ID-11 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>320 TXP DD-X 1+7</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>320 TXP HC-110 1+14</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>320 TXP HC-110F 1+19</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>320 TXP Xtol 1+1</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>320 TXP TMRS 1+11</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>400 TMax DD-X 1+6</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>400 TMax HC-110E 1+11</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>400 TMax ID-11 1+1</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>7</g_comp>
+	</film>
+	<film>
+		<name>400 TMax TMRS 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>400 TMax Xtol 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>7</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 D-76 1+0 Hi</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 D-76 1+1</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 DD-X 1+6</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 DI#13 1+7</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 HC-110F 1+19</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 Xtol 1+0 Hi</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 Xtol 1+1</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Acros 100 DI#13 1+9 Lo-Composite</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>APX 100 D-76 1+1</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>APX 100 DD-X 1+7</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>APX 100 DI#13 1+7</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>APX 100 HC-110B 1+7 Hi</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>APX 100 HC-110F 1+19</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>APX 100 TMRS 1+9</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>APX 100 Xtol 1+1</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>APX 100 DI#13 1+9 Lo-Composite</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>Bergger 200 D-76 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>Bergger 200 DD-X 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Bergger 200 Xtol 1+1</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>Classic 200 D-76 1+1</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Delta 100 D-76 1+1</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Delta 100 DD-X 1+6</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Delta 100 DD-X 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Delta 100 HC-110F 1+19</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Delta 100 TMRS 1+9</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Delta 100 Xtol 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Efke 100 DI#13 1+7</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>Efke 100 ID-11 1+2</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>Efke 100 DD-X 1+11</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>Efke 25 DD-X 1+11</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Efke 25 DI#13 1+7</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>Efke 25 DI#13 1+9 Lo-Composite</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>Efke 25 HC-110F 1+19</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>Efke 25 ID-11 1+2</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Efke 25 Xtol 1+2</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Forte 200 DD-X 1+6</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Forte 200 ID-11 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>Forte 400 DD-X 1+4</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>Forte 400 ID-11 1+0</name>
+		<exp_comp>E</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus D-76 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus DD-X 1+4 Hi</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus DD-X 1+6</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>2</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus HC-110F 1+19</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus TMRS 1+9</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus Xtol 1+1</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>FP4 Plus Xtol 1+2</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus D-76 1+0</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus D-76 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus DD-X 1+5</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus DD-X 1+6</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus HC-110E 1+11</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus TMRS 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>HP5 Plus Xtol 1+1</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>7</g_comp>
+	</film>
+	<film>
+		<name>TMX D-76 1+0 Hi</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>TMX DD-X 1+6</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>TMX DI#13 1+7</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>1</g_comp>
+	</film>
+	<film>
+		<name>TMX HC-110E 1+11</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>TMX ID-11 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>TMX TMRS 1+4 Hi</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>TMX TMRS 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>3</g_comp>
+	</film>
+	<film>
+		<name>TMX Xtol 1+1</name>
+		<exp_comp>D</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>TMY D-76 1+0 Hi</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>TMY D-76 1+1</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>TMY DD-X 1+6</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>TMY DD-X 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>6</g_comp>
+	</film>
+	<film>
+		<name>TMY HC-110E 1+11</name>
+		<exp_comp>A</exp_comp>
+		<g_comp>7</g_comp>
+	</film>
+	<film>
+		<name>TMY TMRS 1+7</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>TMY Xtol 1+0 Hi</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>7</g_comp>
+	</film>
+	<film>
+		<name>TMY Xtol 1+1</name>
+		<exp_comp>B</exp_comp>
+		<g_comp>7</g_comp>
+	</film>
+	<film>
+		<name>TXT D-76 1+0 Hi</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>TXT D-76 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>TXT DD-X 1+8</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>4</g_comp>
+	</film>
+	<film>
+		<name>TXT HC-110F 1+19</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>TXT Xtol 1+0 Hi</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+	<film>
+		<name>TXT Xtol 1+1</name>
+		<exp_comp>C</exp_comp>
+		<g_comp>5</g_comp>
+	</film>
+</common_films>

@@ -1,0 +1,89 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Working with Matcher documents</title>
+</head>
+
+<body>
+
+<b><font SIZE="4" COLOR="#000000">
+<h1><font face="Arial">Working with Matcher documents</font></h1>
+<blockquote>
+<h3><font face="Arial"><a name="Opening_files"></a>Opening an Existing File</font></h3>
+</font></b>
+<p><font COLOR="#000000"><font face="Arial">Select “Open” under the “File” menu, or click
+on the “Open” toolbar icon. If the file you’re interested appears in the
+list of “recent” files under the “File”menu, you can select it directly.
+In all cases the file will open with the curve family displayed.</font></p>
+</font><b><font SIZE="4" COLOR="#000000">
+<h3><font face="Arial"><a name="new_file"></a>Creating a New File</font></h3>
+</font></b><font COLOR="#000000">
+<p><font face="Arial">To create a new file you can select “New Matcher” from the 
+file menu or click on the corresponding toolbar symbol. A dialog window &quot;Select 
+a Plotter Film File&quot; will open asking you to select a film file to load. Next a 
+similar dialog, &quot;Select a Plotter Paper File&quot; will open asking you to select a 
+paper file to load. If either of these dialogs is canceled, the new Matcher 
+document will be closed. </font> </p>
+<h3><b><font face="Arial" color="#000000" size="4"><a name="ref_files"></a>How
+Matcher documents uses Film and Paper files</font></b> </h3>
+<p><font face="Arial">Saved Matcher documents store references to the original
+Film and Paper files. In order to reload a Matcher document both the Film and
+Paper files needs to be available. If the Film and/or Paper files are in
+different folders than the Matcher document, the Matcher document must store the
+complete folder path name for each of the files.&nbsp; If either of these two
+documents have been moved or are missing you will be prompted to search for
+them.&nbsp;</font></p>
+<blockquote>
+<p><font face="Arial"><i>Note: It is possible to select a different set of Film
+and Paper files under these circumstances which may lead to unpredictable
+results.</i></font></p>
+</blockquote>
+<p><font face="Arial">While it is not strictly necessary to store all of your
+Plotter files in the same directory, we recommend that you do so to avoid
+possible problems when reloading Matcher documents.</font></p>
+<h3><b><font face="Arial" size="4"><a name="overrides"></a>Overriding Analysis
+Parameters</font></b> </h3>
+<p><font face="Arial">Normally, the Matcher will use the analysis parameters 
+(Paper ES, Exp. Adj., Flare Density, etc.) that accompanied the original Film 
+and Paper files. However it is possible to override these parameters and your 
+changes will replace the original values when the Matcher document is saved. In 
+this case the Info tab will remind you that “Analysis parameters have been 
+overridden.” Click on the &quot;Restore File Defaults&quot; option on the Edit menu to 
+return to the original values.</font></p>
+<p><font face="Arial">Plotter also attempts to detect when the original Film and
+Paper analysis parameters have been updated. Plotter uses the modification date
+and time of the original files to detect when the files have been updated.&nbsp;
+Upon loading a Matcher document, Plotter will check these dates against the
+dates that were saved when the Matcher document was created and if the Film
+and/or Paper file is newer you will be prompted whether to reload the updated
+analysis values. If you choose no you can always use the &quot;Restore File
+Defaults&quot; option later.</font> </p>
+<blockquote>
+<p><i><font face="Arial">Note: When transferring files between computers via
+email, the internet, etc... it may trigger this update checking since the file
+creation dates will change.&nbsp; You should use your discretion in choosing
+whether or not to reload the analysis parameters.</font></i> </p>
+</blockquote>
+<p><font face="Arial" size="4"><b><a name="reloading"></a>Reloading Film and
+Paper files into existing Matcher documents</b></font> </p>
+<p><font face="Arial">After you’ve matched a film/paper combination and 
+appraised its gradation relative to the reference curve, you may be interested 
+in examining other pairs of materials. Choose the Match tab and select either 
+“Load New Film” or “Load New Paper.” Make your selection from the list of files 
+that opens, and the new curve family will appear. Choose one of the curves to 
+initiate the match and select the Paper tab (if it’s not already selected) to 
+see the new match. You can repeat this process as many times as you like but 
+unless you save your work each new file will overwrite the previous one.</font></p>
+<p><font face="Arial">Reloading new Films and Paper will cause any override 
+values to be discarded (i.e. the original Film or Paper file parameters are 
+used). In addition, an approximated Film curves will be discarded.</font> </p>
+</font>
+
+</blockquote>
+
+</body>
+
+</html>
