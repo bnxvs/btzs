@@ -157,6 +157,26 @@ describe('анализ плёнки: EFS, G-bar, SBR, N', () => {
     }
   });
 
+  it('коррекция экспозиции меняет EFS (номинальная опорная точка неподвижна)', () => {
+    const doc = readFilmSample('_400_TMax_ID11_23_75.pfc');
+    const base = analyzeFilm(doc.curves, doc.stepTablet, params, doc.family.filmIso);
+    const shifted = analyzeFilm(
+      doc.curves,
+      doc.stepTablet,
+      { ...params, expAdj: 1 },
+      doc.family.filmIso,
+    );
+    // Опорная точка не сдвигается вместе с кривыми…
+    expect(shifted.referenceSpeedPoint).toBeCloseTo(base.referenceSpeedPoint!, 9);
+    // …а точки скорости кривых сдвигаются, поэтому EFS пересчитывается.
+    for (let i = 0; i < doc.curves.length; i++) {
+      expect(shifted.curves[i].speedPointLogE).toBeLessThan(base.curves[i].speedPointLogE!);
+      expect(shifted.curves[i].efs!).toBeGreaterThan(base.curves[i].efs!);
+    }
+    // Один стоп экспозиции — вдвое большая эффективная светочувствительность.
+    expect(shifted.curves[0].efs! / base.curves[0].efs!).toBeCloseTo(2, 6);
+  });
+
   it('переход на персональную точку скорости меняет EFS', () => {
     const doc = readFilmSample(filmFiles()[0]);
     const normal = analyzeFilm(doc.curves, doc.stepTablet, params, doc.family.filmIso);

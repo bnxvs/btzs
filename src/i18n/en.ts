@@ -154,6 +154,10 @@ export const en: Record<MessageKey, string> = {
   'analyze.legend.dr':
     'density range: the difference between the minimum and maximum useful density',
   'analyze.legend.speedPoint': 'speed point: the exposure taken as the reference for film speed',
+  'analyze.legend.expAdj':
+    'exposure adjustment in stops: positive overexposes, negative underexposes (shifts the curve and changes EFS)',
+  'analyze.legend.flareDensity':
+    'simulated flare density (typically 0.001…0.1): lifts the curve shadows',
   'analyze.legend.idMin': 'the minimum useful print density taken as IDmin',
   'analyze.legend.idMax': 'the maximum useful print density (IDmax % of the maximum density)',
   'analyze.legend.isoRange':

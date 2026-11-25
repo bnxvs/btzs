@@ -231,8 +231,16 @@ export function analyzeFilmCurve(
 }
 
 /**
- * Анализирует семейство кривых плёнки: определяет опорную точку скорости по
- * кривой с градиентом, близким к опорному, затем считает EFS каждой кривой.
+ * Анализирует семейство кривых плёнки: определяет опорную (номинальную) точку
+ * скорости по кривой с градиентом, близким к опорному, затем считает EFS
+ * каждой кривой.
+ *
+ * Опорная точка — это ориентир, «привязанный» к измеренному семейству: она
+ * вычисляется по исходным выборкам, без смоделированной вуали и коррекции
+ * экспозиции. Поэтому смоделированные эффекты сдвигают кривые относительно
+ * неподвижного ориентира, и EFS пересчитывается — так же, как опорная
+ * персональная точка скорости (PSP) задаёт постоянную величину
+ * (spec: curve-analysis / «Flare and exposure adjustment»).
  */
 export function analyzeFilm(
   curves: readonly Curve[],
@@ -240,9 +248,12 @@ export function analyzeFilm(
   params: AnalysisParams,
   filmIso: number,
 ): FilmAnalysis {
-  // Предварительный проход для выбора эталонной кривой по G-bar.
+  // Предварительный проход по исходным выборкам: выбор эталонной кривой по
+  // G-bar и её точка скорости. Вуаль и Exp. Adj. сюда намеренно не входят —
+  // опорная точка не должна «уезжать» вместе с моделируемым сдвигом кривых,
+  // иначе коррекция экспозиции взаимно сокращалась бы и не влияла на EFS.
   const prelim = curves.map((curve) => {
-    const samples = curveSamples(curve, tablet, params);
+    const samples = buildSamples(curve, tablet);
     const sp = speedPointLogE(samples, params.method);
     const window = sp === undefined ? undefined : windowAnalysis(samples, sp, params.es);
     return { curve, sp, gBar: window?.gBar };

@@ -471,6 +471,8 @@ const FILM_LEGEND: { term: MessageKey; desc: MessageKey }[] = [
   { term: 'analysis.es', desc: 'analyze.legend.es' },
   { term: 'analyze.dr', desc: 'analyze.legend.dr' },
   { term: 'analyze.speedPoint', desc: 'analyze.legend.speedPoint' },
+  { term: 'charts.expAdj', desc: 'analyze.legend.expAdj' },
+  { term: 'charts.flareDensity', desc: 'analyze.legend.flareDensity' },
 ];
 
 /** Термины легенды для бумаги (термин + пояснение). */
