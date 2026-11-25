@@ -47,6 +47,7 @@ openspec/       спецификация изменений (change `macos-port`
 - Node.js 18+ (проверено на Node 26).
 - Rust и Cargo (для сборки настольного приложения Tauri).
 - Xcode Command Line Tools (только сборка под macOS).
+- Docker + Docker Compose (только для развёртывания на сервере).
 
 ## Установка
 
@@ -82,6 +83,66 @@ npm run build
 ```sh
 npm run tauri build
 ```
+
+## Развёртывание на сервере (Docker)
+
+Приложение — статическая SPA без серверной части, поэтому на VPS оно
+раздаётся как статика через nginx. В браузерном режиме работа с файлами идёт
+через `<input type="file">` и скачивание (`src/ui/file-service.ts` сам выбирает
+бэкенд), так что дополнительных сервисов не требуется.
+
+Быстрый запуск на VPS:
+
+```sh
+cp .env.example .env      # при необходимости поправьте порт/привязку
+./scripts/deploy.sh
+```
+
+Либо напрямую:
+
+```sh
+docker compose up -d --build
+docker compose ps
+curl -fsS http://127.0.0.1:8080/healthz   # → ok
+```
+
+По умолчанию контейнер публикуется на `127.0.0.1:8080` — это подходит, если
+перед ним уже стоит обратный прокси. Для прямого доступа извне задайте в
+`.env`:
+
+```
+PLOTTER_BIND=0.0.0.0
+PLOTTER_PORT=80
+```
+
+### Прокси и HTTPS (Nginx Proxy Manager)
+
+TLS и обратный прокси выполняет внешний **Nginx Proxy Manager** (NPM) — этот
+проект его не поднимает. Подключите приложение к docker-сети NPM:
+
+```sh
+NPM_NETWORK=npm_default ./scripts/deploy.sh --npm
+```
+
+В NPM создайте Proxy Host:
+- **Forward Hostname** — `plotter` (сетевой алиас контейнера);
+- **Forward Port** — `80`;
+- **Scheme** — `http`; SSL/сертификат выдаёт сам NPM.
+
+Если имя сети отличается, укажите его: `NPM_NETWORK=<имя>`. Список сетей —
+`docker network ls`. При работе через NPM публикацию порта на хосте можно
+убрать (секция `ports` в `docker-compose.yml`) — NPM обращается к контейнеру
+напрямую по сети.
+
+### Обновление
+
+```sh
+git pull
+./scripts/deploy.sh
+```
+
+Порт/привязка настраиваются переменными `PLOTTER_BIND` и `PLOTTER_PORT`;
+проверка работоспособности — `GET /healthz`. Логи: `docker compose logs -f web`.
 
 ## Проверка качества
 

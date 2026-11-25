@@ -1,0 +1,26 @@
+# Override: подключение Plotter к внешней docker-сети Nginx Proxy Manager.
+#
+# NPM (запущенный отдельно, обычно как контейнер) должен находиться в одной
+# сети с этим приложением, чтобы проксировать по имени контейнера.
+#
+# Использование:
+#
+#   NPM_NETWORK=npm_default docker compose \
+#     -f docker-compose.yml -f docker-compose.npm.yml up -d --build
+#
+# Имя сети по умолчанию — `npm_default`; уточните его командой
+# `docker network ls`. В интерфейсе NPM в качестве Forward Hostname укажите
+# `plotter` (сетевой алиас ниже), Forward Port — 80.
+
+services:
+  web:
+    networks:
+      default: {}
+      npm:
+        aliases:
+          - plotter
+
+networks:
+  npm:
+    external: true
+    name: ${NPM_NETWORK:-npm_default}

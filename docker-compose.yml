@@ -1,0 +1,40 @@
+# Продакшен-развёртывание Plotter (веб-версия) на VPS.
+#
+#   docker compose up -d --build
+#
+# Приложение — статическая SPA: контейнер только раздаёт файлы через nginx,
+# серверной части и базы данных нет. Параметры — в файле `.env`
+# (см. .env.example).
+#
+# TLS/reverse proxy здесь НЕ поднимается: его выполняет внешний
+# Nginx Proxy Manager. Чтобы подключить контейнер к его сети, используйте
+# docker-compose.npm.yml (см. README).
+
+name: plotter
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Версия попадает в лейблы образа (см. Dockerfile).
+        APP_VERSION: "1.2.0"
+    image: btzs/plotter:1.2.0
+    restart: unless-stopped
+    ports:
+      # Публикация нужна для доступа извне/через хост-прокси.
+      # Для NPM в docker-сети порт вообще не обязателен — тогда поставьте
+      # PLOTTER_BIND=127.0.0.1 (по умолчанию) или уберите секцию ports.
+      - "${PLOTTER_BIND:-127.0.0.1}:${PLOTTER_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

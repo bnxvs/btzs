@@ -4,6 +4,11 @@ src-tauri/target/
 *.local
 .DS_Store
 
+# Локальное окружение docker-развёртывания (секреты, домены, порты).
+.env
+.env.*
+!.env.example
+
 # Оригинальный бинарник Plotter for Windows (BTZS Software) — не публикуется.
 WinPlotter.exe
 

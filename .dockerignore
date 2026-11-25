@@ -1,0 +1,32 @@
+# Контекст сборки Docker.
+# Исключаем всё, что не нужно стадии `npm run build`.
+.git
+.gitignore
+.github
+
+node_modules
+dist
+
+# Настольная оболочка (Tauri) не участвует в веб-сборке.
+src-tauri
+
+# Образцы данных и оригинальные бинарники BTZS — нужны только тестам.
+app
+WinPlotter.exe
+
+# Артефакты реверс-инжиниринга и документация.
+exeres
+extracted
+msi
+.tmp
+openspec
+docs
+
+# Прочее.
+.DS_Store
+*.local
+Dockerfile
+.dockerignore
+docker-compose*.yml
+.env
+.env.*
