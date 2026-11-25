@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_PLOT,
+  LOG10_2,
   PLOT_VIEW,
   connectSegments,
   fromPixelX,
   fromPixelY,
+  luxTicks,
   seriesScale,
   toPixelX,
   toPixelY,
@@ -36,6 +38,23 @@ describe('масштаб осей', () => {
     const scale = seriesScale([5, 5], [2, 2]);
     expect(scale.xMax).toBeGreaterThan(scale.xMin);
     expect(scale.yMax).toBeGreaterThan(scale.yMin);
+  });
+
+  it('clampYMinZero не заводит нижнюю границу плотности ниже нуля', () => {
+    const scale = seriesScale([1, 2, 3], [0.05, 1.4, 2.3], { clampYMinZero: true });
+    // Плотность неотрицательна: ось начинается ровно в нуле, а не в «-0,11».
+    expect(scale.yMin).toBe(0);
+    expect(scale.yMax).toBeGreaterThan(2.3);
+  });
+
+  it('clampYMinZero не трогает ось, если данные целиком положительны и далеки от нуля', () => {
+    const scale = seriesScale([1, 2], [1.0, 2.0], { clampYMinZero: true });
+    expect(scale.yMin).toBeGreaterThan(0);
+  });
+
+  it('clampYMinZero оставляет отрицательные данные как есть', () => {
+    const scale = seriesScale([1, 2], [-1, 1], { clampYMinZero: true });
+    expect(scale.yMin).toBeLessThan(0);
   });
 });
 
@@ -71,6 +90,30 @@ describe('перевод координат', () => {
       expect(px).toBeLessThanOrEqual(DEFAULT_PLOT.padding + DEFAULT_PLOT.width);
     }
     expect(PLOT_VIEW.width).toBeGreaterThan(DEFAULT_PLOT.padding + DEFAULT_PLOT.width - 1);
+  });
+});
+
+describe('деления шкалы экспозиции (Lux/с)', () => {
+  it('деления идут через ступень ×2 от круглой декады с подписью 10^logE', () => {
+    const scale = { xMin: -3.04, xMax: -0.04, yMin: 0, yMax: 3 };
+    const ticks = luxTicks(scale);
+    expect(ticks.length).toBeGreaterThan(3);
+    // Начинается с ближайшей круглой декады внутри диапазона.
+    expect(ticks[0].x).toBeCloseTo(-3, 9);
+    expect(ticks[0].value).toBeCloseTo(0.001, 9);
+    for (let i = 1; i < ticks.length; i++) {
+      // Каждое следующее деление — ровно одна ступень (×2).
+      expect(ticks[i].x - ticks[i - 1].x).toBeCloseTo(LOG10_2, 9);
+      expect(ticks[i].value).toBeCloseTo(Math.pow(10, ticks[i].x), 9);
+    }
+  });
+
+  it('деления не выходят за пределы диапазона', () => {
+    const scale = { xMin: -3.04, xMax: -0.04, yMin: 0, yMax: 3 };
+    for (const tick of luxTicks(scale)) {
+      expect(tick.x).toBeGreaterThanOrEqual(scale.xMin - 1e-9);
+      expect(tick.x).toBeLessThanOrEqual(scale.xMax + 1e-9);
+    }
   });
 });
 

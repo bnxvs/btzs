@@ -1,7 +1,17 @@
-import { formatNumber } from '@/i18n';
+import { formatNumber, formatSignificant, t } from '@/i18n';
 import type { FamilyPlot, PlotPoint } from '@/core/analysis';
-import { DEFAULT_PLOT, PLOT_VIEW, seriesScale, toPixelX, toPixelY } from './chart-scale';
+import {
+  DEFAULT_PLOT,
+  PLOT_VIEW,
+  luxTicks,
+  seriesScale,
+  toPixelX,
+  toPixelY,
+} from './chart-scale';
 import type { DataScale } from './chart-scale';
+
+/** Шкала оси X: относительный logE либо экспозиция Lux/с (= 10^logE). */
+export type XScale = 'logE' | 'lux';
 
 /**
  * График семейства характеристических кривых (spec: charts / «Family curve
@@ -73,6 +83,18 @@ export interface FamilyChartProps {
   xTitle: string;
   /** Подпись оси y. */
   yTitle: string;
+  /**
+   * Шкала оси X: относительный logE (по умолчанию) либо экспозиция Lux/с
+   * (spec: charts / «Exposure scale switch»). Геометрия кривых не меняется —
+   * меняются только подписи и деления оси.
+   */
+  xScale?: XScale;
+  /**
+   * Обработчик переключения шкалы. Если задан, над графиком показывается
+   * переключатель «logE | Lux/с». В печати обработчик не передаётся, поэтому
+   * переключатель на бумаге не рисуется.
+   */
+  onXScaleChange?: (scale: XScale) => void;
   /** Показывать сетку. */
   showGrid?: boolean;
   /** Рисовать кривые цветом. */
@@ -132,9 +154,10 @@ export function chartScale(props: {
     xs.push(m.x);
     ys.push(m.y);
   }
-  // Кривые идут по оси плотности, поэтому базовая линия — ноль.
+  // Кривые идут по оси плотности, поэтому базовая линия — ноль. Плотность
+  // неотрицательна, поэтому нижнюю границу оси не заводим ниже нуля.
   ys.push(0);
-  return seriesScale(xs, ys);
+  return seriesScale(xs, ys, { clampYMinZero: true });
 }
 
 export function FamilyChart(props: FamilyChartProps) {
@@ -143,34 +166,71 @@ export function FamilyChart(props: FamilyChartProps) {
   const box = DEFAULT_PLOT;
   const rightEdge = box.padding + box.width;
   const bottomEdge = box.padding + box.height;
+  const xScale: XScale = props.xScale ?? 'logE';
+
+  // Деления оси X: либо равномерные по logE, либо по ступеням экспозиции
+  // (×2) — подписанные значениями Lux/с (spec: charts / «Exposure scale
+  // switch»). Сетка в режиме Lux/с идёт по каждой ступени, а подписи
+  // прореживаются, чтобы не наезжать друг на друга на узком графике.
+  const xGrid: number[] =
+    xScale === 'lux' ? luxTicks(scale).map((tick) => tick.x) : axisTicks(scale, 'x');
+  const xLabels: { x: number; text: string }[] = (() => {
+    if (xScale !== 'lux') {
+      return axisTicks(scale, 'x').map((tick) => ({ x: tick, text: formatNumber(tick, 2) }));
+    }
+    const lux = luxTicks(scale);
+    const stride = Math.max(1, Math.ceil(lux.length / 8));
+    return lux
+      .filter((_, i) => i % stride === 0)
+      .map((tick) => ({ x: tick.x, text: formatSignificant(tick.value) }));
+  })();
+
+  const switchControl = props.onXScaleChange ? (
+    <div className="family-scale" role="group" aria-label={t('familyChart.scale.label')}>
+      {(['logE', 'lux'] as const).map((value) => (
+        <button
+          key={value}
+          type="button"
+          className={value === xScale ? 'family-scale-button selected' : 'family-scale-button'}
+          data-testid={`family-scale-${value}`}
+          aria-pressed={value === xScale}
+          onClick={() => props.onXScaleChange?.(value)}
+        >
+          {t(value === 'lux' ? 'familyChart.scale.lux' : 'familyChart.scale.logE')}
+        </button>
+      ))}
+    </div>
+  ) : null;
 
   return (
-    <svg
-      className="chart-svg family-chart"
-      data-testid={props.testId ?? 'family-chart'}
-      role="img"
-      aria-label={props.ariaLabel}
-      viewBox={`0 0 ${PLOT_VIEW.width} ${PLOT_VIEW.height}`}
-    >
-      <rect
-        className="chart-plot"
-        x={box.padding}
-        y={box.padding}
-        width={box.width}
-        height={box.height}
-      />
+    <div className="family-chart-wrap">
+      {switchControl}
+      <svg
+        className="chart-svg family-chart"
+        data-testid={props.testId ?? 'family-chart'}
+        role="img"
+        aria-label={props.ariaLabel}
+        viewBox={`0 0 ${PLOT_VIEW.width} ${PLOT_VIEW.height}`}
+      >
+        <rect
+          className="chart-plot"
+          x={box.padding}
+          y={box.padding}
+          width={box.width}
+          height={box.height}
+        />
 
-      {showGrid &&
-        axisTicks(scale, 'x').map((tick) => (
-          <line
-            key={`gx${tick}`}
-            className="chart-grid"
-            x1={toPixelX(tick, scale)}
-            y1={box.padding}
-            x2={toPixelX(tick, scale)}
-            y2={bottomEdge}
-          />
-        ))}
+        {showGrid &&
+          xGrid.map((tick, i) => (
+            <line
+              key={`gx${i}`}
+              className="chart-grid"
+              x1={toPixelX(tick, scale)}
+              y1={box.padding}
+              x2={toPixelX(tick, scale)}
+              y2={bottomEdge}
+            />
+          ))}
       {showGrid &&
         axisTicks(scale, 'y').map((tick) => (
           <line
@@ -338,15 +398,15 @@ export function FamilyChart(props: FamilyChartProps) {
         </text>
       ))}
 
-      {axisTicks(scale, 'x').map((tick) => (
+      {xLabels.map((tick, i) => (
         <text
-          key={`tx${tick}`}
+          key={`tx${i}`}
           className="chart-tick"
-          x={toPixelX(tick, scale)}
+          x={toPixelX(tick.x, scale)}
           y={bottomEdge + 32}
           textAnchor="middle"
         >
-          {formatNumber(tick, 2)}
+          {tick.text}
         </text>
       ))}
       {axisTicks(scale, 'y').map((tick) => (
@@ -404,7 +464,8 @@ export function FamilyChart(props: FamilyChartProps) {
           </text>
         ) : null,
       )}
-    </svg>
+      </svg>
+    </div>
   );
 }
 

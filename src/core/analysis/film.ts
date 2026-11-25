@@ -267,41 +267,13 @@ export function analyzeFilm(
   return { curves: results, referenceSpeedPoint, referenceCurve };
 }
 
-/** Одна зона: номер, координата logE и плотность. */
-export interface Zone {
-  /** Номер зоны (2..8). */
-  zone: number;
-  /** Относительный logE начала зоны. */
-  logE: number;
-  /** Плотность в этой точке (зона плотности негатива). */
-  density: number;
-}
-
 /**
- * Делит диапазон яркостей сюжета на зоны 2..8.
- *
- * @param samples  выборка
- * @param speedPoint точка скорости (относительный logE)
- * @param sbrLog   диапазон яркостей сюжета (логарифмические единицы)
+ * Зоны сюжета/плотности негатива считает `filmGraphZones` (`family.ts`): для
+ * каждой зоны 2..8 он возвращает интервал относительной экспозиции (`x0`, `x1`)
+ * и диапазон плотности с медианой (`low`, `high`, `median`). Отдельные функции
+ * «зон сюжета» и «зон плотности негатива» не нужны — это одни и те же зоны,
+ * показанные с двух сторон (см. spec: curve-analysis / «Zone analysis»).
  */
-export function subjectZones(
-  samples: readonly Sample[],
-  speedPoint: number,
-  sbrLog: number,
-): Zone[] {
-  const zones: Zone[] = [];
-  for (let zone = 2; zone <= 8; zone++) {
-    const logE = speedPoint + ((zone - 2) / 6) * sbrLog;
-    const density = densityAt(samples, logE) ?? 0;
-    zones.push({ zone, logE, density });
-  }
-  return zones;
-}
-
-/** Зоны плотности негатива — плотности на границах зон сюжета. */
-export function negativeDensityZones(zones: readonly Zone[]): { zone: number; density: number }[] {
-  return zones.map((z) => ({ zone: z.zone, density: z.density }));
-}
 
 /**
  * Продлевает кривую при низком градиенте: возвращает дополнительные точки,

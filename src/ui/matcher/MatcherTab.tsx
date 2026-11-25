@@ -19,12 +19,15 @@ import {
   saveCurrentMatchForComparison,
   standardReferenceGrays,
 } from '@/core/analysis';
-import { getViewSettings, subscribeViewSettings } from '@/store';
+import { getViewSettings, setViewSettings, subscribeViewSettings } from '@/store';
 import { FamilyChart } from '@/ui/charts/FamilyChart';
+import type { GraphZone } from '@/core/analysis';
 import { openDocumentFile, saveDocumentFile } from '@/ui/file-service';
 import { Dialog, DialogButtons } from '@/ui/components/Dialog';
 import { ConfirmDialog } from '@/ui/components/ConfirmDialog';
 import { NumberField } from '@/ui/components/NumberField';
+import { ZoneTable } from '@/ui/components/ZoneTable';
+import type { ZoneRow } from '@/ui/components/ZoneTable';
 import { ApproximatedCurvesDialog } from './ApproximatedCurvesDialog';
 
 /**
@@ -418,8 +421,10 @@ function FilmTab({
       <div className="matcher-graph" data-testid="matcher-film-graph">
         <FamilyChart
           plot={plot}
-          xTitle={t('familyChart.axis.logE')}
+          xTitle={t(view.xScale === 'lux' ? 'familyChart.axis.lux' : 'familyChart.axis.logE')}
           yTitle={t('familyChart.axis.density')}
+          xScale={view.xScale}
+          onXScaleChange={(scale) => setViewSettings({ xScale: scale })}
           showGrid={view.displayGrid}
           colorCurves={view.colorCurves}
           ariaLabel={t('matcher.film.chart')}
@@ -433,11 +438,10 @@ function FilmTab({
           <p>{`SBR: ${fmt(selected.sbrStops)}`}</p>
         </div>
       )}
-      <ZoneTable title={t('matcher.zones.subject')} zones={subjectZoneRows(selected)} testId="subject-zones" />
       <ZoneTable
-        title={t('matcher.zones.negative')}
-        zones={negativeZoneRows(selected)}
-        testId="film-negative-zones"
+        title={t('matcher.zones.film')}
+        rows={graphZoneRows(plot.zones.zones)}
+        testId="film-zones"
       />
       <div className="matcher-actions">
         <button type="button" data-testid="manage-approx" onClick={onManageApprox}>
@@ -510,8 +514,10 @@ function PaperTab({
       <div className="matcher-graph" data-testid="matcher-paper-graph">
         <FamilyChart
           plot={plot}
-          xTitle={t('familyChart.axis.logE')}
+          xTitle={t(view.xScale === 'lux' ? 'familyChart.axis.lux' : 'familyChart.axis.logE')}
           yTitle={t('familyChart.axis.density')}
+          xScale={view.xScale}
+          onXScaleChange={(scale) => setViewSettings({ xScale: scale })}
           showGrid={view.displayGrid}
           colorCurves={view.colorCurves}
           ariaLabel={t('matcher.paper.chart')}
@@ -542,17 +548,18 @@ function PaperTab({
 
       <ZoneTable
         title={t('matcher.zones.negative')}
-        zones={negativeZoneRows(filmCurve)}
+        rows={graphZoneRows(negativeFilmZones(doc, filmCurve))}
         testId="paper-negative-zones"
       />
       <ZoneTable
         title={t('matcher.zones.print')}
-        zones={printZoneRows(selected)}
+        rows={densityZoneRows(plot.zones.zones)}
+        showMedian
         testId="paper-print-zones"
       />
       <ZoneTable
         title={t('matcher.zones.reference')}
-        zones={referenceZoneRows(doc)}
+        rows={referenceZoneRows(doc)}
         testId="paper-reference-zones"
       />
 
@@ -769,76 +776,53 @@ function CurveList({
   );
 }
 
-/** Таблица зон (номер + плотность). */
-function ZoneTable({
-  title,
-  zones,
-  testId,
-}: {
-  title: string;
-  zones: { zone: number; density: number; low?: number; high?: number; median?: number }[];
-  testId: string;
-}) {
-  return (
-    <div className="matcher-zones" data-testid={testId}>
-      <h3>{title}</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>{t('matcher.zones.zone')}</th>
-            <th>{t('matcher.zones.density')}</th>
-            {zones[0]?.median !== undefined && <th>{t('matcher.zones.median')}</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {zones.map((zone) => (
-            <tr key={zone.zone}>
-              <td>{zone.zone}</td>
-              <td>{fmt(zone.density)}</td>
-              {zone.median !== undefined && <td>{fmt(zone.median)}</td>}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
 /** Формат числа с двумя знаками (или «—»). */
 function fmt(value: number | undefined): string {
   return value === undefined || !Number.isFinite(value) ? '—' : formatNumber(value, 2);
 }
 
-/** Строки зон сюжета (по результату анализа плёнки). */
-function subjectZoneRows(curve: ReturnType<typeof analyzeMatcherFilm>[number] | undefined) {
-  if (!curve || curve.speedPointLogE === undefined || curve.sbrLog === undefined) return [];
-  return Array.from({ length: 7 }, (_, i) => ({
-    zone: i + 2,
-    density: curve.speedPointLogE! + (i / 6) * curve.sbrLog!,
+/** Строки таблицы зон по зонам графика (экспозиция + диапазон плотности). */
+function graphZoneRows(zones: readonly GraphZone[]): ZoneRow[] {
+  return zones.map((z) => ({
+    zone: z.zone,
+    low: z.low,
+    high: z.high,
+    median: z.median,
+    x0: z.x0,
+    x1: z.x1,
   }));
 }
 
-/** Строки зон плотности негатива (по результату анализа плёнки). */
-function negativeZoneRows(curve: ReturnType<typeof analyzeMatcherFilm>[number] | undefined) {
-  if (!curve || curve.speedPointLogE === undefined || curve.sbrLog === undefined) return [];
-  return Array.from({ length: 7 }, (_, i) => ({
-    zone: i + 2,
-    density: curve.speedPointLogE! + (i / 6) * curve.sbrLog!,
+/** Строки таблицы зон с плотностью и медианой, без столбца экспозиции. */
+function densityZoneRows(zones: readonly GraphZone[]): ZoneRow[] {
+  return zones.map((z) => ({
+    zone: z.zone,
+    low: z.low,
+    high: z.high,
+    median: z.median,
   }));
 }
 
-/** Строки зон печати (по результату анализа бумаги). */
-function printZoneRows(curve: ReturnType<typeof analyzeMatcherPaper>[number] | undefined) {
-  if (!curve || curve.idMin === undefined || curve.dr === undefined) return [];
-  return Array.from({ length: 7 }, (_, i) => ({
-    zone: i + 2,
-    density: curve.idMin! + (i / 6) * curve.dr!,
-    median: curve.idMin! + ((i + 0.5) / 6) * curve.dr!,
-  }));
+/**
+ * Зоны плотности негатива для вкладки Paper: те же зоны выбранной кривой
+ * плёнки, что и на вкладке Film (spec: matcher / «Вкладка Paper»).
+ */
+function negativeFilmZones(
+  doc: MatcherDocument,
+  curve: ReturnType<typeof analyzeMatcherFilm>[number] | undefined,
+): GraphZone[] {
+  if (!doc.film || !curve) return [];
+  return filmGraphZones(
+    curve.curve,
+    doc.film.stepTablet,
+    doc.analysisParams,
+    curve.speedPointLogE,
+    curve.sbrLog,
+  ).zones;
 }
 
 /** Строки эталонных зон (по эталонным серым эталонной кривой). */
-function referenceZoneRows(doc: MatcherDocument) {
+function referenceZoneRows(doc: MatcherDocument): ZoneRow[] {
   const grays = doc.referenceCurveType === ReferenceCurveType.Loaded && doc.loadedReferenceCurve
     ? doc.loadedReferenceCurve.points.map((p) => p.density)
     : doc.referenceCurveGrays.length >= 9

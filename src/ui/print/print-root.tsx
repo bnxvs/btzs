@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { FilmDocument, PaperDocument } from '@/core/model';
 import { buildFamilyPlot } from '@/core/analysis';
+import { getViewSettings } from '@/store';
 import type { PrintSettings } from '@/store';
 import { PrintPageContent } from './PrintPageContent';
 import type { PrintJob } from './print-layout';
@@ -52,6 +53,7 @@ function PrintRoot({
             charts={page.charts}
             settings={settings}
             family={family}
+            xScale={getViewSettings().xScale}
             testIdPrefix="print-document-"
           />
         </article>

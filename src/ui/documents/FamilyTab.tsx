@@ -2,7 +2,7 @@ import { useMemo, useSyncExternalStore, useState } from 'react';
 import { formatNumber, t } from '@/i18n';
 import type { CurveDocument, FilmDocument, PaperDocument } from '@/core/model';
 import { buildFamilyPlot } from '@/core/analysis';
-import { getViewSettings, subscribeViewSettings } from '@/store';
+import { getViewSettings, setViewSettings, subscribeViewSettings } from '@/store';
 import { FamilyChart } from '@/ui/charts/FamilyChart';
 import { FamilyDetailsDialog } from './FamilyDetailsDialog';
 
@@ -73,8 +73,10 @@ export function FamilyTab({ doc, onDocChange }: FamilyTabProps) {
       <div className="family-graph" data-testid="family-graph">
         <FamilyChart
           plot={plot}
-          xTitle={t('familyChart.axis.logE')}
+          xTitle={t(view.xScale === 'lux' ? 'familyChart.axis.lux' : 'familyChart.axis.logE')}
           yTitle={t('familyChart.axis.density')}
+          xScale={view.xScale}
+          onXScaleChange={(scale) => setViewSettings({ xScale: scale })}
           showGrid={view.displayGrid}
           colorCurves={view.colorCurves}
           ariaLabel={t('familyChart.title')}

@@ -8,7 +8,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFilm, readPaper } from '@/core/format';
 import type { FilmDocument, PaperDocument } from '@/core/model';
 import {
@@ -165,5 +166,61 @@ describe('FamilyChart', () => {
     // Обычная кривая не переопределяет цвет встроенно — остаётся из таблицы
     // стилей (синей).
     expect(plain.style.stroke).toBe('');
+  });
+
+  it('ось плотности не показывает отрицательные значения', () => {
+    const doc = filmFixture();
+    const plot = buildFamilyPlot(doc.curves, doc.stepTablet, doc.analysisParams);
+    const { container } = render(
+      <FamilyChart plot={plot} xTitle="logE" yTitle="Плотность" ariaLabel="график" />,
+    );
+    // Подписи оси Y — это .chart-tick у левого края (text-anchor="end").
+    const yLabels = Array.from(container.querySelectorAll('text.chart-tick[text-anchor="end"]')).map(
+      (el) => el.textContent ?? '',
+    );
+    expect(yLabels.length).toBeGreaterThan(0);
+    for (const label of yLabels) {
+      expect(label.startsWith('-')).toBe(false);
+    }
+  });
+
+  it('без обработчика не показывает переключатель шкалы', () => {
+    const doc = filmFixture();
+    const plot = buildFamilyPlot(doc.curves, doc.stepTablet, doc.analysisParams);
+    render(<FamilyChart plot={plot} xTitle="logE" yTitle="D" ariaLabel="график" />);
+    expect(screen.queryByTestId('family-scale-logE')).toBeNull();
+    expect(screen.queryByTestId('family-scale-lux')).toBeNull();
+  });
+
+  it('переключатель шкалы отмечает активную шкалу и вызывает обработчик', async () => {
+    const user = userEvent.setup();
+    const doc = filmFixture();
+    const plot = buildFamilyPlot(doc.curves, doc.stepTablet, doc.analysisParams);
+    const onChange = vi.fn();
+    render(
+      <FamilyChart
+        plot={plot}
+        xTitle="logE"
+        yTitle="D"
+        ariaLabel="график"
+        xScale="logE"
+        onXScaleChange={onChange}
+      />,
+    );
+    expect(screen.getByTestId('family-scale-logE')).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByTestId('family-scale-lux'));
+    expect(onChange).toHaveBeenCalledWith('lux');
+  });
+
+  it('в режиме Lux/с подписывает ось значениями экспозиции (10^logE)', () => {
+    const doc = filmFixture();
+    const plot = buildFamilyPlot(doc.curves, doc.stepTablet, doc.analysisParams);
+    const { container } = render(
+      <FamilyChart plot={plot} xTitle="Lux/с" yTitle="D" ariaLabel="график" xScale="lux" />,
+    );
+    // Деления идут от круглой декады через ступень ×2, поэтому среди подписей
+    // есть хотя бы одно значение вида 0,00… .
+    const labels = Array.from(container.querySelectorAll('.chart-tick')).map((el) => el.textContent);
+    expect(labels.some((label) => label === '0,001')).toBe(true);
   });
 });

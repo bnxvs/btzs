@@ -111,12 +111,11 @@ describe('вкладки Info/Film/Paper/Compare (задача 7.2)', () => {
     expect(screen.getByTestId('matcher-reference-name')).toBeInTheDocument();
   });
 
-  it('вкладка Film показывает анализ и зоны', () => {
+  it('вкладка Film показывает анализ и объединённую таблицу зон', () => {
     renderMatcher(matcherFixture());
     fireEvent.click(screen.getByTestId('matcher-tab-film'));
     expect(screen.getByTestId('matcher-film-analysis')).toBeInTheDocument();
-    expect(screen.getByTestId('subject-zones')).toBeInTheDocument();
-    expect(screen.getByTestId('film-negative-zones')).toBeInTheDocument();
+    expect(screen.getByTestId('film-zones')).toBeInTheDocument();
   });
 
   it('вкладка Film показывает график семейства', () => {

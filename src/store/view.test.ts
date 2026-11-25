@@ -58,4 +58,10 @@ describe('store/view', () => {
   it('снимок стабилен между вызовами без изменений (для useSyncExternalStore)', () => {
     expect(getViewSettings()).toBe(getViewSettings());
   });
+
+  it('шкала оси X по умолчанию — logE и переключается', () => {
+    expect(getViewSettings().xScale).toBe('logE');
+    expect(setViewSettings({ xScale: 'lux' }).xScale).toBe('lux');
+    expect(getViewSettings().xScale).toBe('lux');
+  });
 });

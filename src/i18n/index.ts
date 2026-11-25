@@ -159,6 +159,17 @@ export function formatNumber(value: number, fractionDigits?: number): string {
 }
 
 /**
+ * Форматирует число с заданным числом значащих цифр (без лишних нулей).
+ * Используется для подписей шкалы экспозиции, где важна величина числа,
+ * а не фиксированное число знаков после разделителя (например `0,00195`).
+ */
+export function formatSignificant(value: number, digits = 3): string {
+  return new Intl.NumberFormat(intlLocale(), {
+    maximumSignificantDigits: digits,
+  }).format(value);
+}
+
+/**
  * Разбирает число, допуская запятую как десятичный разделитель
  * (русская локаль). Возвращает `NaN`, если строка не является числом.
  */

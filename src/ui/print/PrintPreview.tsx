@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { t } from '@/i18n';
 import type { FilmDocument, PaperDocument } from '@/core/model';
 import { buildFamilyPlot } from '@/core/analysis';
+import { getViewSettings, subscribeViewSettings } from '@/store';
 import type { PrintSettings } from '@/store';
 import { Dialog } from '@/ui/components/Dialog';
 import { buildPrintJob } from './print-layout';
@@ -31,6 +32,7 @@ export function PrintPreview({ doc, settings, onClose }: PrintPreviewProps) {
   const job = buildPrintJob(doc, settings);
   const [page, setPage] = useState(0);
   const [zoomIndex, setZoomIndex] = useState(2); // 1.0
+  const view = useSyncExternalStore(subscribeViewSettings, getViewSettings, getViewSettings);
 
   const total = job.pages.length;
   const current = job.pages[page];
@@ -101,6 +103,7 @@ export function PrintPreview({ doc, settings, onClose }: PrintPreviewProps) {
           charts={current?.charts ?? []}
           settings={settings}
           family={family}
+          xScale={view.xScale}
         />
       </div>
     </Dialog>

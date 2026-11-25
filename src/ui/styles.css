@@ -37,13 +37,10 @@ body {
   font-weight: 600;
   outline: 2px solid currentColor;
 }
-.matcher-zones table,
 .compare-table {
   border-collapse: collapse;
   margin-bottom: 12px;
 }
-.matcher-zones th,
-.matcher-zones td,
 .compare-table th,
 .compare-table td {
   border: 1px solid #bbb;
@@ -451,29 +448,29 @@ body {
 .analyze-table td:first-child {
   text-align: left;
 }
-.analyze-zones {
+.zone-table {
   margin-bottom: 14px;
 }
-.analyze-zones h3 {
+.zone-table h3 {
   margin: 0 0 6px;
 }
-.analyze-zones table {
+.zone-table table {
   border-collapse: collapse;
 }
-.analyze-zones th,
-.analyze-zones td {
+.zone-table th,
+.zone-table td {
   border: 1px solid #d2d2d7;
   padding: 3px 12px;
   text-align: right;
 }
-.analyze-zones th {
+.zone-table th {
   background: #f5f5f7;
 }
-.analyze-zones th:first-child,
-.analyze-zones td:first-child {
+.zone-table th:first-child,
+.zone-table td:first-child {
   text-align: left;
 }
-.analyze-zones .zone-row.hovered {
+.zone-table .zone-row.hovered {
   background: #e6f0ff;
 }
 .analyze-info {
@@ -713,6 +710,37 @@ body {
 .analyze-graph {
   max-width: 660px;
   margin: 0 0 16px;
+}
+.family-chart-wrap {
+  position: relative;
+}
+/* Переключатель шкалы оси X над графиком (spec: charts / «Exposure scale
+   switch»). В печати не показывается правая часть — обработчик не задан. */
+.family-scale {
+  display: inline-flex;
+  gap: 2px;
+  margin-bottom: 6px;
+  padding: 2px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  background: #f5f5f7;
+}
+.family-scale-button {
+  padding: 3px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #3a3a3c;
+  font: inherit;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+.family-scale-button:hover {
+  background: #e8e8ed;
+}
+.family-scale-button.selected {
+  background: #0068ff;
+  color: #fff;
 }
 .family-chart-empty {
   margin: 0;

@@ -11,13 +11,12 @@ import {
   buildSamples,
   extendForLowGradient,
   filmGraphZones,
-  negativeDensityZones,
   paperGraphZones,
   printZoneBounds,
-  subjectZones,
 } from '@/core/analysis';
-import { getViewSettings, subscribeViewSettings } from '@/store';
+import { getViewSettings, setViewSettings, subscribeViewSettings } from '@/store';
 import { NumberField } from '@/ui/components/NumberField';
+import { ZoneTable } from '@/ui/components/ZoneTable';
 import { FamilyChart } from '@/ui/charts/FamilyChart';
 import type { ChartMarker, CurveLabel, DashedSeries } from '@/ui/charts/FamilyChart';
 
@@ -89,14 +88,6 @@ function FilmAnalysisView({
   const view = useSyncExternalStore(subscribeViewSettings, getViewSettings, getViewSettings);
   const analysis = analyzeFilm(doc.curves, doc.stepTablet, doc.analysisParams, doc.family.filmIso);
   const selectedCurve = analysis.curves[selected];
-
-  const subject = selectedCurve
-    ? subjectZones(
-        buildSamples(selectedCurve.curve, doc.stepTablet),
-        selectedCurve.speedPointLogE ?? 0,
-        selectedCurve.sbrLog ?? 0,
-      )
-    : [];
 
   const plot = useMemo(() => {
     const base = buildFamilyPlot(doc.curves, doc.stepTablet, doc.analysisParams, {
@@ -209,8 +200,10 @@ function FilmAnalysisView({
           <div className="analyze-graph" data-testid="analyze-film-graph">
             <FamilyChart
               plot={plot}
-              xTitle={t('familyChart.axis.logE')}
+              xTitle={t(view.xScale === 'lux' ? 'familyChart.axis.lux' : 'familyChart.axis.logE')}
               yTitle={t('familyChart.axis.density')}
+              xScale={view.xScale}
+              onXScaleChange={(scale) => setViewSettings({ xScale: scale })}
               showGrid={view.displayGrid}
               colorCurves={view.colorCurves}
               ariaLabel={t('familyChart.title')}
@@ -252,13 +245,15 @@ function FilmAnalysisView({
           <AbbrLegend items={FILM_LEGEND} />
 
           <ZoneTable
-            title={t('matcher.zones.subject')}
-            rows={subject.map((z) => ({ zone: z.zone, density: z.density }))}
-            testId="analyze-subject-zones"
-          />
-          <ZoneTable
-            title={t('matcher.zones.negative')}
-            rows={negativeDensityZones(subject)}
+            title={t('matcher.zones.film')}
+            rows={plot.zones.zones.map((z) => ({
+              zone: z.zone,
+              low: z.low,
+              high: z.high,
+              median: z.median,
+              x0: z.x0,
+              x1: z.x1,
+            }))}
             testId="analyze-negative-zones"
           />
         </>
@@ -344,8 +339,10 @@ function PaperAnalysisView({
           <div className="analyze-graph" data-testid="analyze-paper-graph">
             <FamilyChart
               plot={plot}
-              xTitle={t('familyChart.axis.logE')}
+              xTitle={t(view.xScale === 'lux' ? 'familyChart.axis.lux' : 'familyChart.axis.logE')}
               yTitle={t('familyChart.axis.density')}
+              xScale={view.xScale}
+              onXScaleChange={(scale) => setViewSettings({ xScale: scale })}
               showGrid={view.displayGrid}
               colorCurves={view.colorCurves}
               ariaLabel={t('familyChart.title')}
@@ -395,11 +392,11 @@ function PaperAnalysisView({
             title={t('matcher.zones.print')}
             rows={printZones.map((z) => ({
               zone: z.zone,
-              density: z.median,
               low: z.low,
               high: z.high,
               median: z.median,
             }))}
+            showMedian
             hovered={hoverZone}
             onHover={setHoverZone}
             testId="analyze-print-zones"
@@ -458,53 +455,6 @@ function CurvePicker({
         </li>
       ))}
     </ul>
-  );
-}
-
-/** Таблица зон с опциональными границами и наведением. */
-function ZoneTable({
-  title,
-  rows,
-  testId,
-  hovered,
-  onHover,
-}: {
-  title: string;
-  rows: { zone: number; density: number; low?: number; high?: number; median?: number }[];
-  testId: string;
-  hovered?: number | null;
-  onHover?: (zone: number | null) => void;
-}) {
-  if (rows.length === 0) return null;
-  const withBounds = rows[0].median !== undefined;
-  return (
-    <div className="analyze-zones" data-testid={testId}>
-      <h3>{title}</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>{t('matcher.zones.zone')}</th>
-            <th>{t('matcher.zones.density')}</th>
-            {withBounds && <th>{t('matcher.zones.median')}</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((zone) => (
-            <tr
-              key={zone.zone}
-              className={hovered === zone.zone ? 'zone-row hovered' : 'zone-row'}
-              data-testid={`${testId}-row-${zone.zone}`}
-              onMouseEnter={onHover ? () => onHover(zone.zone) : undefined}
-              onMouseLeave={onHover ? () => onHover(null) : undefined}
-            >
-              <td>{zone.zone}</td>
-              <td>{fmt(zone.density)}</td>
-              {withBounds && <td>{fmt(zone.median)}</td>}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
   );
 }
 

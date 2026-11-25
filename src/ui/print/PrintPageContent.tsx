@@ -4,6 +4,7 @@ import type { FamilyPlot } from '@/core/analysis';
 import type { PrintSettings } from '@/store';
 import { chartLabel } from '@/ui/charts/chart-label';
 import { FamilyChart } from '@/ui/charts/FamilyChart';
+import type { XScale } from '@/ui/charts/FamilyChart';
 import { ChartCanvas, buildChartSpec } from '@/ui/charts/chart-render';
 
 /**
@@ -26,6 +27,8 @@ export interface PrintPageContentProps {
   settings: PrintSettings;
   /** График семейства (строится один раз на документ). */
   family: FamilyPlot;
+  /** Шкала оси X графика семейства (logE либо Lux/с). */
+  xScale?: XScale;
   /** Префикс идентификаторов для тестов (у печатной копии — свой). */
   testIdPrefix?: string;
 }
@@ -36,6 +39,7 @@ export function PrintPageContent({
   charts,
   settings,
   family,
+  xScale = 'logE',
   testIdPrefix = '',
 }: PrintPageContentProps) {
   const id = (name: string) => `${testIdPrefix}${name}`;
@@ -46,8 +50,9 @@ export function PrintPageContent({
         <figcaption>{t('familyChart.title')}</figcaption>
         <FamilyChart
           plot={family}
-          xTitle={t('familyChart.axis.logE')}
+          xTitle={t(xScale === 'lux' ? 'familyChart.axis.lux' : 'familyChart.axis.logE')}
           yTitle={t('familyChart.axis.density')}
+          xScale={xScale}
           showGrid={settings.gridLineWidth > 0}
           colorCurves={settings.colorCurves}
           ariaLabel={t('familyChart.title')}

@@ -8,10 +8,9 @@ import {
   applyFlare,
   buildSamples,
   extendForLowGradient,
+  filmGraphZones,
   medianDensity,
-  negativeDensityZones,
   printZoneBounds,
-  subjectZones,
   zonesMedian,
 } from '@/core/analysis';
 import type { Sample } from '@/core/analysis';
@@ -73,27 +72,37 @@ describe('flare и коррекция экспозиции', () => {
 });
 
 describe('зоны плёнки', () => {
-  it('создаёт зоны 2..8 (7 штук) равномерно', () => {
-    const zones = subjectZones(samplesOf(), -2, 1.5);
+  // Зоны строит `filmGraphZones` (family.ts): интервалы экспозиции (x0..x1) и
+  // диапазоны плотности (low..high, median) для зон 2..8.
+  function zonesOf() {
+    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+    const curve = doc.curves[2];
+    const samples = buildSamples(curve, doc.stepTablet);
+    const speedPoint = samples[3].logE;
+    return filmGraphZones(curve, doc.stepTablet, doc.analysisParams, speedPoint, 1.5).zones;
+  }
+
+  it('создаёт зоны 2..8 (7 штук) с равномерными интервалами экспозиции', () => {
+    const zones = zonesOf();
     expect(zones.map((z) => z.zone)).toEqual([2, 3, 4, 5, 6, 7, 8]);
     for (let i = 1; i < zones.length; i++) {
-      expect(zones[i].logE - zones[i - 1].logE).toBeCloseTo(zones[1].logE - zones[0].logE, 9);
+      expect(zones[i].x1 - zones[i].x0).toBeCloseTo(zones[0].x1 - zones[0].x0, 9);
     }
   });
 
-  it('плотность зоны не убывает по ходу зон (на монотонной части)', () => {
-    const samples = samplesOf();
-    const zones = subjectZones(samples, samples[3].logE, 1.2);
-    for (let i = 1; i < zones.length; i++) {
-      expect(zones[i].density).toBeGreaterThanOrEqual(zones[i - 1].density - 1e-9);
+  it('диапазон плотности зоны не вырожден и низ не выше верха', () => {
+    const zones = zonesOf();
+    for (const zone of zones) {
+      expect(zone.high).toBeGreaterThanOrEqual(zone.low - 1e-9);
+      expect(zone.median).toBeGreaterThanOrEqual(zone.low - 1e-9);
+      expect(zone.median).toBeLessThanOrEqual(zone.high + 1e-9);
     }
   });
 
-  it('зоны плотности негатива соответствуют зонам сюжета', () => {
-    const zones = subjectZones(samplesOf(), -2, 1.5);
-    const neg = negativeDensityZones(zones);
-    expect(neg).toHaveLength(7);
-    expect(neg[0]).toEqual({ zone: 2, density: zones[0].density });
+  it('экспозиция зоны (x0..x1) отличима от плотности (low..high)', () => {
+    const zones = zonesOf();
+    // Зоны сюжета и плотности негатива — одни зоны с двух сторон, а не копия.
+    expect(zones[0].x0).not.toBe(zones[0].low);
   });
 });
 

@@ -169,6 +169,9 @@ describe('13.3 Русская локализация интерфейса', () =
       'analyze.idMin',
       'analyze.idMax',
       'analyze.dr',
+      // Обозначения шкалы оси X — канонические (logE, Lux/с).
+      'familyChart.scale.logE',
+      'familyChart.scale.lux',
     ]);
     for (const key of Object.keys(ru) as MessageKey[]) {
       if (allowed.has(key)) continue;

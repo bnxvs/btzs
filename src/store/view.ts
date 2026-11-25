@@ -14,6 +14,9 @@ import { getOptions } from './options';
  * это требуется `useSyncExternalStore` (иначе снимок считается новым на каждом
  * рендере и React зацикливается).
  */
+/** Шкала оси X графика семейства. */
+export type AxisScale = 'logE' | 'lux';
+
 export interface ViewSettings {
   /** Сглаживать кривые. */
   smoothCurves: boolean;
@@ -21,6 +24,11 @@ export interface ViewSettings {
   colorCurves: boolean;
   /** Показывать сетку. */
   displayGrid: boolean;
+  /**
+   * Шкала оси X: относительный logE либо экспозиция Lux/с. Сеансовый
+   * переключатель вида (spec: charts / «Exposure scale switch»).
+   */
+  xScale: AxisScale;
 }
 
 let current: ViewSettings | null = null;
@@ -34,6 +42,7 @@ function fromOptions(): ViewSettings {
     smoothCurves: display.smoothCurves,
     colorCurves: display.colorCurves,
     displayGrid: display.displayGrid,
+    xScale: 'logE',
   };
 }
 

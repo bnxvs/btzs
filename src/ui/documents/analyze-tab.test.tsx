@@ -85,10 +85,15 @@ describe('5.8 Вкладка Analyze плёнки', () => {
     expect(screen.queryByTestId('analyze-constructions')).not.toBeInTheDocument();
   });
 
-  it('показывает зоны сюжета и зоны плотности негатива', () => {
+  it('показывает объединённую таблицу зон (плотность и экспозиция)', () => {
     renderAnalyze(filmFixture());
-    expect(screen.getByTestId('analyze-subject-zones')).toBeInTheDocument();
-    expect(screen.getByTestId('analyze-negative-zones')).toBeInTheDocument();
+    const table = screen.getByTestId('analyze-negative-zones');
+    expect(table).toBeInTheDocument();
+    expect(table).toHaveTextContent('Плотность');
+    expect(table).toHaveTextContent('Экспозиция, logE');
+    // Строки зон — 2..8.
+    expect(screen.getByTestId('analyze-negative-zones-row-2')).toBeInTheDocument();
+    expect(screen.getByTestId('analyze-negative-zones-row-8')).toBeInTheDocument();
   });
 
   it('переносит зоны на график семейства', () => {
