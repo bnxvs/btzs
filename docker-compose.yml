@@ -6,9 +6,9 @@
 # серверной части и базы данных нет. Параметры — в файле `.env`
 # (см. .env.example).
 #
-# TLS/reverse proxy здесь НЕ поднимается: его выполняет внешний
-# Nginx Proxy Manager. Чтобы подключить контейнер к его сети, используйте
-# docker-compose.npm.yml (см. README).
+# TLS/reverse proxy здесь НЕ поднимается: его выполняет Nginx Proxy Manager.
+# Порт публикуется на хост, и NPM проксирует на `127.0.0.1:<PLOTTER_PORT>`
+# (см. README, раздел «Прокси и HTTPS»).
 
 name: plotter
 
@@ -23,9 +23,9 @@ services:
     image: btzs/plotter:1.2.0
     restart: unless-stopped
     ports:
-      # Публикация нужна для доступа извне/через хост-прокси.
-      # Для NPM в docker-сети порт вообще не обязателен — тогда поставьте
-      # PLOTTER_BIND=127.0.0.1 (по умолчанию) или уберите секцию ports.
+      # Публикуем на loopback: снаружи виден только через NPM (который видит
+      # этот порт, т.к. запущен с network_mode: host). Для прямого доступа
+      # извне поставьте PLOTTER_BIND=0.0.0.0 в .env.
       - "${PLOTTER_BIND:-127.0.0.1}:${PLOTTER_PORT:-8080}:80"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]

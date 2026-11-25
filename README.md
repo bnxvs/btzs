@@ -118,21 +118,23 @@ PLOTTER_PORT=80
 ### Прокси и HTTPS (Nginx Proxy Manager)
 
 TLS и обратный прокси выполняет внешний **Nginx Proxy Manager** (NPM) — этот
-проект его не поднимает. Подключите приложение к docker-сети NPM:
+проект его не поднимает. Контейнер публикует порт на хост (по умолчанию
+`127.0.0.1:8080`), и NPM проксирует на него. В NPM создайте Proxy Host:
+
+- **Domain Names** — ваш домен;
+- **Scheme** — `http`;
+- **Forward Hostname** — `127.0.0.1`;
+- **Forward Port** — `8080` (значение `PLOTTER_PORT` из `.env`);
+- **Block Common Exploits** — включить; **SSL** — запросить Let's Encrypt.
+
+Это работает независимо от режима сети NPM, в том числе при
+`network_mode: host` (как в типовой установке NPM на VPS): при host-сети у
+NPM нет docker-DNS, поэтому адрес задаётся как `127.0.0.1:<порт>`, а не по
+имени контейнера. Занятость порта проверяется так:
 
 ```sh
-NPM_NETWORK=npm_default ./scripts/deploy.sh --npm
+ss -ltn | grep :8080
 ```
-
-В NPM создайте Proxy Host:
-- **Forward Hostname** — `plotter` (сетевой алиас контейнера);
-- **Forward Port** — `80`;
-- **Scheme** — `http`; SSL/сертификат выдаёт сам NPM.
-
-Если имя сети отличается, укажите его: `NPM_NETWORK=<имя>`. Список сетей —
-`docker network ls`. При работе через NPM публикацию порта на хосте можно
-убрать (секция `ports` в `docker-compose.yml`) — NPM обращается к контейнеру
-напрямую по сети.
 
 ### Обновление
 
