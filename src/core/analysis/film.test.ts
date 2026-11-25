@@ -131,7 +131,7 @@ describe('анализ плёнки: EFS, G-bar, SBR, N', () => {
 
   it('G-bar растёт с увеличением времени проявления (по образцам)', () => {
     // Кривые в файле упорядочены по времени проявления; градиент должен расти.
-    const doc = readFilmSample('_400_TMax_ID11_23_75.pfc');
+    const doc = readFilmSample('400 TMax ID-11 2+3 75.pfc');
     const analysis = analyzeFilm(doc.curves, doc.stepTablet, params, doc.family.filmIso);
     const gs = analysis.curves.map((c) => c.gBar!);
     for (let i = 1; i < gs.length; i++) {
@@ -140,7 +140,7 @@ describe('анализ плёнки: EFS, G-bar, SBR, N', () => {
   });
 
   it('EFS монотонно растёт с временем проявления (по образцам)', () => {
-    const doc = readFilmSample('_400_TMax_ID11_23_75.pfc');
+    const doc = readFilmSample('400 TMax ID-11 2+3 75.pfc');
     const analysis = analyzeFilm(doc.curves, doc.stepTablet, params, doc.family.filmIso);
     const efs = analysis.curves.map((c) => c.efs!);
     for (let i = 1; i < efs.length; i++) {
@@ -158,7 +158,7 @@ describe('анализ плёнки: EFS, G-bar, SBR, N', () => {
   });
 
   it('коррекция экспозиции меняет EFS (номинальная опорная точка неподвижна)', () => {
-    const doc = readFilmSample('_400_TMax_ID11_23_75.pfc');
+    const doc = readFilmSample('400 TMax ID-11 2+3 75.pfc');
     const base = analyzeFilm(doc.curves, doc.stepTablet, params, doc.family.filmIso);
     const shifted = analyzeFilm(
       doc.curves,
@@ -192,7 +192,7 @@ describe('анализ плёнки: EFS, G-bar, SBR, N', () => {
   });
 
   it('флаг низкого градиента различает слабую и сильную кривые', () => {
-    const doc = readFilmSample('_400_TMax_ID11_23_75.pfc');
+    const doc = readFilmSample('400 TMax ID-11 2+3 75.pfc');
     const analysis = analyzeFilm(doc.curves, doc.stepTablet, params, doc.family.filmIso);
     // Первая кривая (4 мин) — самая слабая: SBR упирается в границу => продление.
     expect(analysis.curves[0].lowGradient).toBe(true);

@@ -38,7 +38,7 @@ import { analyzePaper } from './paper';
 
 const APP_DIR = join(process.cwd(), 'app');
 
-function filmDoc(name = '_400_TMax_ID11_23_75.pfc') {
+function filmDoc(name = '400 TMax ID-11 2+3 75.pfc') {
   return readFilm(new Uint8Array(readFileSync(join(APP_DIR, name))));
 }
 function paperDoc(name = 'Agfa_MCC.ppc') {

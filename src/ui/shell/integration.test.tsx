@@ -58,7 +58,7 @@ afterEach(() => {
 describe('13.1 Сквозной сценарий документов', () => {
   it('открыть плёнку, перейти по всем вкладкам, данные сохраняются', async () => {
     const user = userEvent.setup();
-    const doc = readFilmFile('_400_TMax_ID11_23_75.pfc');
+    const doc = readFilmFile('400 TMax ID-11 2+3 75.pfc');
     const { entry, latest } = renderDocumentWorkflow(doc, 'film.pfc');
 
     // Новый документ из файла открывается на Family.
@@ -82,7 +82,7 @@ describe('13.1 Сквозной сценарий документов', () => {
   });
 
   it('выполнить сопоставление и повторно открыть .pmf — данные сохраняются', async () => {
-    const film = readFilmFile('_400_TMax_ID11_23_75.pfc');
+    const film = readFilmFile('400 TMax ID-11 2+3 75.pfc');
     const paper = readPaperFile('Agfa_MCC.ppc');
     const match = createMatcherDocument(film, paper, 'film.pfc', 'paper.ppc');
     const opened = roundTripFile(match);
@@ -94,7 +94,7 @@ describe('13.1 Сквозной сценарий документов', () => {
   });
 
   it('расчёт анализа плёнки не меняется после сохранения/открытия', () => {
-    const doc = readFilmFile('_100_TMax_DDX_17_75.pfc');
+    const doc = readFilmFile('100 TMax DD-X 1+7 75.pfc');
     const reopened = roundTripFile(doc);
     expect(reopened).toEqual(doc);
     expect(reopened.analysisParams).toEqual(doc.analysisParams);
@@ -115,7 +115,7 @@ describe('13.2 Круговая совместимость форматов', ()
   });
 
   it('документ → байты → документ: двойной цикл идемпотентен', () => {
-    const doc = readFilmFile('_400_TMax_ID11_23_75.pfc');
+    const doc = readFilmFile('400 TMax ID-11 2+3 75.pfc');
     const once = readFilm(writeFilm(doc));
     const twice = readFilm(writeFilm(once));
     expect(once).toEqual(doc);
@@ -193,7 +193,7 @@ describe('13.3 Русская локализация интерфейса', () =
           />,
         ),
       () => {
-        const film = readFilmFile('_400_TMax_ID11_23_75.pfc');
+        const film = readFilmFile('400 TMax ID-11 2+3 75.pfc');
         render(
           <StepTabletDialog
             doc={film}

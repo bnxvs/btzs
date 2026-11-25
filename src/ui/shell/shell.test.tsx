@@ -37,7 +37,7 @@ import { createMatcherDocument } from '@/core/model';
 const APP_DIR = join(process.cwd(), 'app');
 
 function filmFixture() {
-  return readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+  return readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
 }
 function paperFixture() {
   return readPaper(new Uint8Array(readFileSync(join(APP_DIR, 'Agfa_MCC.ppc'))));

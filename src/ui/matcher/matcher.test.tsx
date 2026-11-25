@@ -19,7 +19,7 @@ import { MatcherTab } from './MatcherTab';
 const APP_DIR = join(process.cwd(), 'app');
 
 function filmFixture() {
-  return readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+  return readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
 }
 function paperFixture() {
   return readPaper(new Uint8Array(readFileSync(join(APP_DIR, 'Agfa_MCC.ppc'))));
@@ -191,7 +191,7 @@ describe('приближённые кривые (задача 7.6)', () => {
     fireEvent.click(screen.getByTestId('matcher-tab-film'));
     fireEvent.click(screen.getByTestId('manage-approx'));
     expect(screen.getByTestId('approx-curves-dialog')).toBeInTheDocument();
-    // Диапазон SBR семейства _400_TMax_ID11_23_75 ≈ [3.76; 6.90]; берём 5,5.
+    // Диапазон SBR семейства 400 TMax ID-11 2+3 75 ≈ [3.76; 6.90]; берём 5,5.
     fireEvent.change(screen.getByTestId('approx-value'), { target: { value: '5,5' } });
     fireEvent.click(screen.getByTestId('dialog-ok'));
     expect(screen.queryByTestId('approx-curves-dialog')).not.toBeInTheDocument();
@@ -323,7 +323,7 @@ describe('сохранение/открытие .pmf (задача 7.9)', () => 
   });
 
   it('побайтово перезаписывает образец без расширенного состояния', () => {
-    const original = new Uint8Array(readFileSync(join(APP_DIR, 'D100RefCrv.pmf2')));
+    const original = new Uint8Array(readFileSync(join(APP_DIR, 'D100-RefCrv.pmf')));
     const doc = readMatcher(original);
     expect(Array.from(writeMatcher(doc))).toEqual(Array.from(original));
   });

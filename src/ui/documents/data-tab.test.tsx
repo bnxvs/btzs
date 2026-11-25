@@ -67,7 +67,7 @@ function renderData(doc: CurveDocument) {
 }
 
 function filmFixture(): FilmDocument {
-  return readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+  return readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
 }
 
 function paperFixture(): PaperDocument {

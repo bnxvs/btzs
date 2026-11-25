@@ -13,7 +13,7 @@ const APP_DIR = join(process.cwd(), 'app');
 
 describe('реестр анализа', () => {
   it('анализирует документ плёнки', () => {
-    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
     const result = analyzeDocument(doc);
     expect(result.kind).toBe('film');
     if (result.kind === 'film') {
@@ -31,7 +31,7 @@ describe('реестр анализа', () => {
   });
 
   it('анализ отдельной кривой совпадает с анализом документа', () => {
-    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
     const single = analyzeCurveAsFilm(doc.curves[0], doc.stepTablet, doc.analysisParams, doc.family.filmIso);
     const whole = analyzeDocument(doc);
     if (whole.kind === 'film') {

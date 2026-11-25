@@ -8,7 +8,7 @@ import type { Sample } from '@/core/analysis';
 const APP_DIR = join(process.cwd(), 'app');
 
 function samplesOf(): Sample[] {
-  const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+  const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
   return buildSamples(doc.curves[2], doc.stepTablet);
 }
 

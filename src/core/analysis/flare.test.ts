@@ -18,7 +18,7 @@ import type { Sample } from '@/core/analysis';
 const APP_DIR = join(process.cwd(), 'app');
 
 function samplesOf(): Sample[] {
-  const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+  const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
   return buildSamples(doc.curves[2], doc.stepTablet);
 }
 
@@ -75,7 +75,7 @@ describe('зоны плёнки', () => {
   // Зоны строит `filmGraphZones` (family.ts): интервалы экспозиции (x0..x1) и
   // диапазоны плотности (low..high, median) для зон 2..8.
   function zonesOf() {
-    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '_400_TMax_ID11_23_75.pfc'))));
+    const doc = readFilm(new Uint8Array(readFileSync(join(APP_DIR, '400 TMax ID-11 2+3 75.pfc'))));
     const curve = doc.curves[2];
     const samples = buildSamples(curve, doc.stepTablet);
     const speedPoint = samples[3].logE;

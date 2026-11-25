@@ -13,7 +13,7 @@ import { ByteReader, ByteWriter, magicAt } from './bytes';
  * Кодек документа Matcher `.pmf`.
  *
  * Формат (little-endian, строки-ссылки — pascal: u8 длина + CP1251),
- * восстановлен по образцу `app/D100RefCrv.pmf2` (442 байта) с побайтовым
+ * восстановлен по образцу `app/D100-RefCrv.pmf` (442 байта) с побайтовым
  * круговым совпадением:
  *
  * ```
